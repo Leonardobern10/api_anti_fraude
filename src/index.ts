@@ -8,10 +8,13 @@ import AuthService from './modules/auth/Service.auth';
 import type User from './modules/auth/User';
 import express from 'express';
 import Server from './server/Server';
+import Logger from './logs/Logger';
+
+const logger: Logger = new Logger();
 
 const db: Array<User> = [];
 const repository = new AuthRepository(db);
-const service = new AuthService(repository);
+const service = new AuthService(repository, logger);
 const controller = new AuthController(service);
 const authRouter = new AuthRouter(controller);
 

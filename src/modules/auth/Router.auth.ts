@@ -27,7 +27,6 @@ export default class AuthRouter {
 
     public test() {
         this.router.get('/test', async (req: Request, res: Response) => {
-            console.log('Chamou');
             this.controller.test(req, res);
         });
     }
