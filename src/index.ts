@@ -1,21 +1,26 @@
 import type { Application } from 'express';
+import App from './app/App';
+import ApiGateway from './gateway/Gateway.router';
+import AuthController from './modules/auth/Controller.auth';
+import AuthRepository from './modules/auth/Repository.auth';
+import AuthRouter from './modules/auth/Router.auth';
+import AuthService from './modules/auth/Service.auth';
+import type User from './modules/auth/User';
 import express from 'express';
 import Server from './server/Server';
-import App from './app/App';
-import ControllerAuth from './auth/Controller.auth';
-import ServiceAuth from './auth/Service.auth';
-import RepositoryAuth from './auth/Repository.auth';
-import type User from './auth/User';
-import RouterAuth from './auth/Router.auth';
 
 const db: Array<User> = [];
-const repository = new RepositoryAuth(db);
-const service = new ServiceAuth(repository);
-const controller = new ControllerAuth(service);
-const router = new RouterAuth(express.Router(), controller);
+const repository = new AuthRepository(db);
+const service = new AuthService(repository);
+const controller = new AuthController(service);
+const authRouter = new AuthRouter(controller);
 
+const gateway = new ApiGateway('/api/v1');
+gateway.addRoute('/auth', authRouter.getRouter());
+// gateway.addRoute('/orders', orderRouter.getRouter());
+// gateway.addRoute('/users', userRouter.getRouter());
 const exp: Application = express();
 const server = new Server(exp);
-const app = new App('/auth', 3000, server);
-app.registerRoutes(router.getRouter());
+const app = new App(3000, server, gateway);
+
 app.init();

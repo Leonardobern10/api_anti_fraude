@@ -1,22 +1,26 @@
-import type { Router } from 'express';
 import type Server from '../server/Server';
+import type ApiGateway from '../gateway/Gateway.router';
 
 export default class App {
-    private path: string;
     private port: string | number;
     private server: Server;
+    private gateway: ApiGateway;
 
-    constructor(path: string, port: string | number, server: Server) {
-        this.path = path;
+    constructor(port: string | number, server: Server, gateway: ApiGateway) {
         this.port = port;
         this.server = server;
+        this.gateway = gateway;
     }
 
     public async init() {
+        this.registerGateway();
         this.server.init(this.port);
     }
 
-    public async registerRoutes(router: Router) {
-        this.server.addRouters(this.path, router);
+    private registerGateway() {
+        this.server.addRouters(
+            this.gateway.getPath(),
+            this.gateway.build(),
+        );
     }
 }

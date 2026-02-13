@@ -1,0 +1,49 @@
+import type { Request, Response } from 'express';
+import type AuthService from './Service.auth';
+import type InterfaceAuthController from '../domain/auth/InterfaceAuthController';
+import type User from './User';
+import { HttpStatus } from '../../utils/HttpStatus.utils';
+
+export default class AuthController implements InterfaceAuthController {
+    private service: AuthService;
+
+    constructor(service: AuthService) {
+        this.service = service;
+    }
+    async register(req: Request, res: Response): Promise<void> {
+        const { name, email, password } = req.body;
+        // Validação
+        const user: User = this.service.register(name, email, password);
+        res.status(HttpStatus.CREATED).json({ data: user });
+    }
+    login(req: Request, res: Response): Promise<void> {
+        throw new Error('Method not implemented.');
+    }
+    logout(req: Request, res: Response): Promise<void> {
+        throw new Error('Method not implemented.');
+    }
+    reset(req: Request, res: Response): Promise<void> {
+        throw new Error('Method not implemented.');
+    }
+    authStatus(req: Request, res: Response): Promise<void> {
+        throw new Error('Method not implemented.');
+    }
+    async getUser(req: Request, res: Response): Promise<void> {
+        console.log('Chamou get user');
+        const { email } = req.query;
+        if (!email) {
+            res.status(HttpStatus.BAD_REQUEST).json({
+                error: 'Email not informed',
+            });
+            return;
+        } else {
+            res.status(HttpStatus.OK).json({
+                data: this.service.findUser(email.toString()),
+            });
+        }
+    }
+
+    public test(req: Request, res: Response) {
+        return res.status(200).json({ message: this.service.getUser() });
+    }
+}
