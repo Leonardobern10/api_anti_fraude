@@ -15,8 +15,10 @@ export default class AuthService implements InterfaceAuthService {
     login(email: string, password: string): boolean {
         throw new Error('Method not implemented.');
     }
-    findUser(email: string): User | null {
-        return this.repository.getUser(email);
+    findUser(email: string): User {
+        const user = this.repository.getUser(email);
+        if (!user) throw new Error('User is not found');
+        return user;
     }
     resetPassword(email: string, newPassword: string): boolean {
         throw new Error('Method not implemented.');

@@ -3,6 +3,9 @@ import type AuthService from './Service.auth';
 import type InterfaceAuthController from '../domain/auth/InterfaceAuthController';
 import type User from './User';
 import { HttpStatus } from '../../utils/HttpStatus.utils';
+import { UserSchema } from './UserSchema';
+import { ZodError } from 'zod';
+import BuildResponseError from '../../utils/BuildResponseError';
 
 export default class AuthController implements InterfaceAuthController {
     private service: AuthService;
@@ -11,10 +14,14 @@ export default class AuthController implements InterfaceAuthController {
         this.service = service;
     }
     async register(req: Request, res: Response): Promise<void> {
-        const { name, email, password } = req.body;
-        // Validação
-        const user: User = this.service.register(name, email, password);
-        res.status(HttpStatus.CREATED).json({ data: user });
+        try {
+            const { name, email, password } = req.body;
+            UserSchema.parse({ name, email, password });
+            const user: User = this.service.register(name, email, password);
+            res.status(HttpStatus.CREATED).json({ data: user });
+        } catch (error) {
+            BuildResponseError.buildError(res, error);
+        }
     }
     login(req: Request, res: Response): Promise<void> {
         throw new Error('Method not implemented.');
