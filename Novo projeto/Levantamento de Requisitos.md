@@ -1,4 +1,4 @@
-### Entrevista
+h### Entrevista
 ##### Quem serão os usuários?
 Cliente: Temos dois perfis principais:
 - **Clientes finais** → Pessoas que compram nossos cursos e assinaturas. 
@@ -105,7 +105,7 @@ Cliente: Ainda não temos algo super sofisticado. Queremos começar simples.
 
 **Período analisado** - Mais de 3 compras em menos de 10 minutos → suspeito
 
-**Histórico de rejeições** - Se o usuário tiver 2 ou mais pagamentos rejeitados nos últimos 30 dias → alto risco
+**Histórico de rejeições** - Se o usuário tivger 2 ou mais pagamentos rejeitados nos últimos 30 dias → alto risco
 
 **Contas no mesmo IP** - Mais de 5 contas criadas no mesmo IP em 24h → suspeito
 
