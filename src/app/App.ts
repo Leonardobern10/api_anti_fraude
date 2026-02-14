@@ -18,9 +18,6 @@ export default class App {
     }
 
     private registerGateway() {
-        this.server.addRouters(
-            this.gateway.getPath(),
-            this.gateway.build(),
-        );
+        this.server.addRouters(this.gateway.getPath(), this.gateway.build());
     }
 }

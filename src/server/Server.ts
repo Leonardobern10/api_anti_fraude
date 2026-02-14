@@ -1,5 +1,6 @@
 import type { Application, Request, Response, Router } from 'express';
 import express from 'express';
+import HttpLogger from '../logs/HttpLogger';
 
 export default class Server {
     private server: Application;
@@ -7,6 +8,7 @@ export default class Server {
     constructor(server: Application) {
         this.server = server;
         this.server.use(express.json());
+        this.server.use(HttpLogger.buildHttpLogger()); // ✔ middleware correto
         this.checkHealth();
     }
 

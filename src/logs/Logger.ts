@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import pino, { Logger as PinoLogger } from 'pino';
 
 export default class Logger {
