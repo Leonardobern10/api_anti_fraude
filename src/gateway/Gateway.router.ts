@@ -1,6 +1,7 @@
 import { Router } from 'express';
+import ApiGatewayInterface from '../modules/domain/ApiGatewayInterface';
 
-export default class ApiGateway {
+export default class ApiGateway implements ApiGatewayInterface {
     private path: string;
     private router: Router;
 

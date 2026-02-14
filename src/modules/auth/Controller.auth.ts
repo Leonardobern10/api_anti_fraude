@@ -1,11 +1,10 @@
 import type { Request, Response } from 'express';
 import type AuthService from './Service.auth';
 import type InterfaceAuthController from '../domain/auth/InterfaceAuthController';
-import type User from './User';
 import { HttpStatus } from '../../utils/HttpStatus.utils';
-import { UserSchema } from './UserSchema';
-import { ZodError } from 'zod';
+import { UserSchema } from '../auth/model/UserSchema';
 import BuildResponseError from '../../utils/BuildResponseError';
+import User from './model/User';
 
 export default class AuthController implements InterfaceAuthController {
     private service: AuthService;

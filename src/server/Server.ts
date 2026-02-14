@@ -1,8 +1,9 @@
 import type { Application, Request, Response, Router } from 'express';
 import express from 'express';
 import HttpLogger from '../logs/HttpLogger';
+import ServerInterface from '../modules/domain/ServerInterface';
 
-export default class Server {
+export default class Server implements ServerInterface {
     private server: Application;
 
     constructor(server: Application) {
