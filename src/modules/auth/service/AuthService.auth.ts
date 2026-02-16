@@ -1,8 +1,9 @@
-import UserNotFoundError from '../../../errors/UserNotFoundError';
-import Logger from '../../../logs/Logger';
-import Crypt from '../../../utils/Crypt';
-import { HttpStatus } from '../../../utils/HttpStatus.utils';
-import JwtUtils from '../../../utils/JWT.utils';
+import UserNotFoundError from '@errors/UserNotFoundError';
+import type Logger from '@logs/Logger';
+
+import Crypt from '@utils/Crypt';
+import { HttpStatus } from '@utils/HttpStatus.utils';
+import JwtUtils from '@utils/JWT.utils';
 import type InterfaceAuthService from '../../domain/auth/InterfaceAuthService';
 import Client from '../model/entity/Client';
 import type AuthRepository from '../repository/AuthRepository';

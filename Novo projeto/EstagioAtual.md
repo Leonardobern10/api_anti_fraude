@@ -1,20 +1,20 @@
 1️⃣ Cadastro e autenticação de usuários
-- Cadastro com e-mail e senha
-- Login seguro
+- Cadastro com e-mail e senha X
+- Login seguro X
 - Recuperação de senha
-- Controle básico de permissões
+- Controle básico de permissões 
 
-1. API REST
-2. Rotas que abordem:
-    a. Criação
-    b. Login
-    c. Desconexão
+1. API REST X
+2. Rotas que abordem: 
+    a. Criação X
+    b. Login X 
+    c. Desconexão X
     d. Recuperação de senha
 3. Métodos / rota
     a. POST /register
-        - 201 CREATED: User created with sucessfull.
-        - 400 BAD REQUEST: Info send is invalid.
-        - 400 BAD REQUEST: This email always is registered.
+        - 201 CREATED: User created with sucessfull. X
+        - 400 BAD REQUEST: Info send is invalid. X
+        - 400 BAD REQUEST: This email always is registered. X
     b. POST /login
         - 200 OK: User logged with sucessfull
         - 400 BAD REQUEST: Info send is invalid.

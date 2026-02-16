@@ -1,6 +1,5 @@
 import type { NextFunction, Request, Response } from 'express';
-import Crypt from '../../../utils/Crypt';
-import JwtUtils from '../../../utils/JWT.utils';
+import JwtUtils from '@utils/JWT.utils';
 
 export default class AuthMiddleWare {
     static checkAuthentication(

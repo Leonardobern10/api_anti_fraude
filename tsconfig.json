@@ -5,6 +5,15 @@
         "rootDir": "./src",
         "outDir": "./dist",
 
+        "baseUrl": "./src",
+        "paths": {
+            "@modules/*": ["modules/*"],
+            "@utils/*": ["utils/*"],
+            "@errors/*": ["errors/*"],
+            "@logs/*": ["logs/*"],
+            "@gateway/*": ["gateway/*"]
+        },
+
         // Environment Settings
         // See also https://aka.ms/tsconfig/module
         "module": "es2022",
