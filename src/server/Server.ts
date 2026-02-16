@@ -1,7 +1,8 @@
 import type { Application, Request, Response, Router } from 'express';
 import express from 'express';
 import HttpLogger from '../logs/HttpLogger';
-import ServerInterface from '../modules/domain/ServerInterface';
+import type ServerInterface from '../modules/domain/ServerInterface';
+import cookieParser from 'cookie-parser';
 
 export default class Server implements ServerInterface {
     private server: Application;
@@ -9,6 +10,7 @@ export default class Server implements ServerInterface {
     constructor(server: Application) {
         this.server = server;
         this.server.use(express.json());
+        this.server.use(cookieParser());
         this.server.use(HttpLogger.buildHttpLogger()); // ✔ middleware correto
         this.checkHealth();
     }

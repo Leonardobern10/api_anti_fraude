@@ -13,8 +13,12 @@ export default class App {
     }
 
     public async init() {
-        this.registerGateway();
-        this.server.init(this.port);
+        try {
+            this.registerGateway();
+            this.server.init(this.port);
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     private registerGateway() {

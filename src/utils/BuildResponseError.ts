@@ -15,7 +15,11 @@ export default class BuildResponseError {
         } else {
             const errorRes = error as Error;
             return res
-                .status(Number(errorRes.cause))
+                .status(
+                    typeof Number(errorRes.cause) === 'number'
+                        ? Number(errorRes.cause)
+                        : HttpStatus.BAD_REQUEST,
+                )
                 .json({ error: errorRes.message });
         }
     }
