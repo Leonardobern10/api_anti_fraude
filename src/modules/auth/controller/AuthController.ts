@@ -46,6 +46,7 @@ export default class AuthController implements InterfaceAuthController {
             BuildResponseError.buildError(res, error);
         }
     }
+
     logout(req: Request, res: Response): void {
         res.clearCookie('token', {
             httpOnly: true,
@@ -54,6 +55,7 @@ export default class AuthController implements InterfaceAuthController {
         });
         res.status(200).json({ message: 'User unlogged with successful.' });
     }
+
     reset(req: Request, res: Response): Promise<void> {
         throw new Error('Method not implemented.');
     }

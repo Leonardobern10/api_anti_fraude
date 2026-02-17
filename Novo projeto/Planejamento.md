@@ -12,3 +12,8 @@ Usuários:
 - ORM com TypeOrm
 - Banco de dados Postgres
 - Senha criptografada
+
+Ainda falta:
+- Redefinição de senha
+- Logica de autorização
+- Separação de privilégios
