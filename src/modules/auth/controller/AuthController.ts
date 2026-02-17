@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 import type AuthService from '../service/AuthService.auth';
 import type InterfaceAuthController from '../../domain/auth/InterfaceAuthController';
 import { HttpStatus } from '../../../utils/HttpStatus.utils';
-import { RegisterSchema } from '../model/RegisterSchema';
+import { RegisterSchema } from '../model/schema/RegisterSchema';
 import BuildResponseError from '../../../utils/BuildResponseError';
 import Client from '../model/entity/Client';
 import UserNotFoundError from '../../../errors/UserNotFoundError';

@@ -13,6 +13,12 @@ import Client from './modules/auth/model/entity/Client';
 import AuthRepository from './modules/auth/repository/AuthRepository';
 import AuthRouter from './modules/auth/router/AuthRouter';
 import AuthDB from './modules/auth/data-source.auth';
+import type InterfaceOrderRepository from '@modules/domain/order/InterfaceOrderRepository';
+import OrderRepository from '@modules/order/repository/OrderRepository';
+import OrderService from '@modules/order/service/OrderService';
+import OrderController from '@modules/order/controller/OrderController';
+import OrderRouter from '@modules/order/router/OrderRouter';
+import { PATH } from '@utils/Path';
 
 // Logs
 const logger: Logger = new Logger();
@@ -20,15 +26,23 @@ const logger: Logger = new Logger();
 // Database
 const authDB = new AuthDB();
 
-// Modules
-const repository = new AuthRepository(authDB);
-const service = new AuthService(repository, logger);
-const controller = new AuthController(service);
-const authRouter = new AuthRouter(controller);
+// Module - AUTH
+const authRepository = new AuthRepository(authDB);
+const authService = new AuthService(authRepository, logger);
+const authController = new AuthController(authService);
+const authRouter = new AuthRouter(authController);
 
+// Module - ORDER
+const orderRepository = new OrderRepository();
+const orderService = new OrderService(orderRepository);
+const orderController = new OrderController(orderService);
+const orderRouter = new OrderRouter(orderController);
+
+// GATEWAY
 const gateway = new ApiGateway('/api/v1');
-gateway.addRoute('/auth', authRouter.getRouter());
-// gateway.addRoute('/orders', orderRouter.getRouter());
+gateway.addRoute(PATH.AUTH.base, authRouter.getRouter());
+gateway.addRoute(PATH.ORDER.base, orderRouter.getRouter());
+
 // gateway.addRoute('/users', userRouter.getRouter());
 const exp: Application = express();
 const server = new Server(exp);

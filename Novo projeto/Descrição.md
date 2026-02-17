@@ -30,6 +30,7 @@ Após o pagamento ser iniciado:
 - O sistema deve enviar os dados para uma análise antifraude
 - A análise não precisa ser instantânea, pode levar alguns segundos
 - O cliente deve conseguir acompanhar o status
+
 ## 4️⃣ Antifraude
 Queremos regras como:
 - Valor muito alto → maior risco

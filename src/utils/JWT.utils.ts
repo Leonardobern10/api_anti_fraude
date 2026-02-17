@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import type { UserType } from '../modules/auth/model/RegisterSchema';
+import type { UserType } from '../modules/auth/model/schema/RegisterSchema';
 import type Client from '../modules/auth/model/entity/Client';
 
 const SECRET = 'super_secret_key';
