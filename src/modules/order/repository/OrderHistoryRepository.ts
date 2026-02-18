@@ -14,7 +14,7 @@ export default class OrderHistoryRepository implements InterfaceOrderHistoryRepo
         this.repo = this.orderDB.getOrderHistoryRepository();
     }
     async save(order: Order, status: OrderStatus): Promise<OrderHistory> {
-        const history = await this.repo.create({
+        const history = this.repo.create({
             order: order,
             currentStatus: status,
         });

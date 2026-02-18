@@ -2,7 +2,6 @@ import type InterfaceOrderController from '@modules/domain/order/InterfaceOrderC
 import type { Request, Response } from 'express';
 import { HttpStatus } from '@utils/HttpStatus.utils';
 import type InterfaceOrderService from '@modules/domain/order/InterfaceOrderService';
-import { OrderStatus } from '../model/OrderStatus';
 import BuildResponseError from '@utils/BuildResponseError';
 import { OrderSchema } from '../model/schema/OrderSchema';
 import HttpError from '@errors/HttpError';
@@ -19,7 +18,10 @@ export default class OrderController implements InterfaceOrderController {
         try {
             const { id } = req.params;
             if (!id || typeof id !== 'string')
-                throw new HttpError(MSG.ORDER.ERROR.INVALID_ID, 400);
+                throw new HttpError(
+                    MSG.ORDER.ERROR.INVALID_ID,
+                    HttpStatus.BAD_REQUEST,
+                );
             const order = await this.service.getOrder(id);
             res.status(HttpStatus.OK).json({ order });
         } catch (error) {

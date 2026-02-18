@@ -1,6 +1,5 @@
 import type InterfaceOrderHistoryService from '@modules/domain/order/InterfaceOrderHistoryService';
 import type Order from '../model/entity/Order';
-import { OrderStatus } from '../model/OrderStatus';
 import type OrderHistoryRepository from '../repository/OrderHistoryRepository';
 import type OrderHistory from '../model/entity/OrderHistory';
 
