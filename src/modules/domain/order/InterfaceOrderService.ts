@@ -1,6 +1,7 @@
 import type Order from '@modules/order/model/entity/Order';
 import type { OrderStatus } from '@modules/order/model/OrderStatus';
 import type { ClientType } from '../types/ClientType';
+import type OrderHistory from '@modules/order/model/entity/OrderHistory';
 
 export default interface InterfaceOrderService {
     verificarToken(token: string): Promise<boolean>;
@@ -9,6 +10,5 @@ export default interface InterfaceOrderService {
     createOrder(email: string, value: number): Promise<Order>;
     updateStatus(id: string, newStatus: OrderStatus): Promise<Order>;
     getOrder(id: string): Promise<Order>;
-    registryHistory(order: Order, newStatus: OrderStatus): Promise<Order>;
     cancelOrder(id: string): Promise<void>;
 }

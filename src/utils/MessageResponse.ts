@@ -19,6 +19,7 @@ export const MSG = {
         ERROR: {
             NOT_FOUND: 'Order not found.',
             INVALID_ID: 'Invalid ID.',
+            UNAUTHORIZED: 'Invalid operation.',
         },
         SUCCESS: {
             CREATED: 'Order created with successfull.',

@@ -15,12 +15,16 @@ import OrderService from '@modules/order/service/OrderService';
 import OrderController from '@modules/order/controller/OrderController';
 import OrderRouter from '@modules/order/router/OrderRouter';
 import { PATH } from '@utils/Path';
+import OrderDB from '@modules/order/data-source.order';
+import OrderHistoryRepository from '@modules/order/repository/OrderHistoryRepository';
+import OrderHistoryService from '@modules/order/service/OrderHistoryService';
 
 // Logs
 const logger: Logger = new Logger();
 
 // Database
 const authDB = new AuthDB();
+const orderDB = new OrderDB();
 
 // Module - AUTH
 const authRepository = new AuthRepository(authDB);
@@ -29,8 +33,10 @@ const authController = new AuthController(authService);
 const authRouter = new AuthRouter(authController);
 
 // Module - ORDER
-const orderRepository = new OrderRepository();
-const orderService = new OrderService(orderRepository);
+const orderHistoryRepository = new OrderHistoryRepository(orderDB);
+const orderHistoryService = new OrderHistoryService(orderHistoryRepository);
+const orderRepository = new OrderRepository(orderDB);
+const orderService = new OrderService(orderRepository, orderHistoryService);
 const orderController = new OrderController(orderService);
 const orderRouter = new OrderRouter(orderController);
 

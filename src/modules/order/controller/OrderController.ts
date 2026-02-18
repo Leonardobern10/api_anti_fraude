@@ -45,9 +45,14 @@ export default class OrderController implements InterfaceOrderController {
         try {
             const { id } = req.params;
             if (!id || typeof id !== 'string')
-                throw new HttpError(MSG.ORDER.ERROR.INVALID_ID, 400);
+                throw new HttpError(
+                    MSG.ORDER.ERROR.INVALID_ID,
+                    HttpStatus.BAD_REQUEST,
+                );
             await this.service.cancelOrder(id);
-            res.status(200).json({ message: MSG.ORDER.SUCCESS.CANCELLED });
+            res.status(HttpStatus.OK).json({
+                message: MSG.ORDER.SUCCESS.CANCELLED,
+            });
         } catch (error) {
             BuildResponseError.buildError(res, error);
         }

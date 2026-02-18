@@ -1,7 +1,13 @@
 import type InterfaceOrderRepository from '@modules/domain/order/InterfaceOrderRepository';
 import Order from '../model/entity/Order';
-import type { OrderStatus } from '../model/OrderStatus';
+import { OrderStatus } from '../model/OrderStatus';
 import type { ClientType } from '@modules/domain/types/ClientType';
+import type { Repository } from 'typeorm';
+import type OrderDB from '../data-source.order';
+import type InterfaceModuleDB from '@modules/domain/ModuleDB';
+import type OrderHistory from '../model/entity/OrderHistory';
+import { MSG } from '@utils/MessageResponse';
+import { HttpStatus } from '@utils/HttpStatus.utils';
 
 // Teste
 const client1: ClientType = {
@@ -35,46 +41,74 @@ const client3: ClientType = {
 };
 
 export default class OrderRepository implements InterfaceOrderRepository {
-    private db: Array<Order>;
+    private orderDB: OrderDB;
+    private repo!: Repository<Order>;
     private users: Array<ClientType>;
 
-    constructor() {
-        this.db = [];
+    constructor(orderDB: OrderDB) {
+        this.orderDB = orderDB;
         this.users = [client1, client2, client3];
+        this.init();
     }
 
-    async save(newOrder: Order): Promise<Order> {
-        this.db.push(newOrder);
-        return newOrder;
-    }
-
-    async delete(id: string): Promise<boolean> {
+    private async init() {
         try {
-            const order = this.db.find((el) => el.getId() === id);
-            if (!order) throw new Error('Order not found.');
-            const newArray = this.db.filter(
-                (el) => el.getId() !== order.getId(),
-            );
-            this.db = newArray;
-            return true;
+            await this.orderDB.init();
+            this.repo = this.orderDB.getOrderRepository();
+            if (!this.repo)
+                throw new Error('Was not possible to get Repository', {
+                    cause: 500,
+                });
         } catch (error) {
-            console.error('Error on delete order: ', error);
-            return false;
+            console.error('Error on Repository', error);
         }
     }
 
+    async save(user: string, value: number): Promise<Order> {
+        const userTest = this.users.find((el) => el.email === user);
+        if (!userTest)
+            throw new Error(MSG.AUTH.ERROR.NOT_FOUND, {
+                cause: HttpStatus.NOT_FOUND,
+            });
+        const order = this.repo.create({ user, value });
+        const orderCreated = this.repo.save(order);
+        return orderCreated;
+    }
+
     async get(id: string): Promise<Order> {
-        const order = this.db.find((el) => el.getId() === id);
-        if (!order) throw new Error('Order not found.');
+        const order = await this.repo.findOne({
+            where: { id: id },
+            relations: { orderHistory: true },
+        });
+        if (!order)
+            throw new Error(MSG.ORDER.ERROR.NOT_FOUND, {
+                cause: HttpStatus.NOT_FOUND,
+            });
         return order;
     }
 
-    async update(id: string, newStatus: OrderStatus): Promise<Order> {
-        const order = this.db.find((el) => el.getId() === id);
-        if (!order) throw new Error('Order not found.');
-        order.setOrderStatus(newStatus);
-        order.setUpdatedAt(new Date());
-        return order;
+    async update(
+        id: string,
+        newStatus: OrderStatus,
+        statusPast: OrderHistory,
+    ): Promise<Order> {
+        const order = await this.repo.findOne({
+            where: { id },
+            relations: { orderHistory: true },
+        });
+
+        if (!order) {
+            throw new Error(MSG.ORDER.ERROR.NOT_FOUND, {
+                cause: HttpStatus.NOT_FOUND,
+            });
+        }
+
+        if (order.orderStatus === OrderStatus.CANCELLED)
+            throw new Error(MSG.ORDER.ERROR.UNAUTHORIZED, { cause: 403 });
+
+        order.orderHistory.push(statusPast);
+        order.orderStatus = newStatus;
+        return await this.repo.save(order);
     }
 
     // Remover

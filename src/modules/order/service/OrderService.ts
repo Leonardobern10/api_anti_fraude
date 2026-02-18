@@ -5,26 +5,19 @@ import type InterfaceOrderRepository from '@modules/domain/order/InterfaceOrderR
 import type { ClientType } from '@modules/domain/types/ClientType';
 import OrderHistory from '../model/entity/OrderHistory';
 import { MSG } from '@utils/MessageResponse';
+import type InterfaceOrderHistoryService from '@modules/domain/order/InterfaceOrderHistoryService';
+import { HttpStatus } from '@utils/HttpStatus.utils';
 
 export default class OrderService implements InterfaceOrderService {
     private repository: InterfaceOrderRepository;
+    private orderHistoryService: InterfaceOrderHistoryService;
 
-    constructor(repository: InterfaceOrderRepository) {
+    constructor(
+        repository: InterfaceOrderRepository,
+        orderHistoryService: InterfaceOrderHistoryService,
+    ) {
         this.repository = repository;
-    }
-
-    async registryHistory(
-        order: Order,
-        newStatus: OrderStatus,
-    ): Promise<Order> {
-        const orderHistory = new OrderHistory(
-            order.getUpdatedAt(),
-            order.getOrderStatus(),
-        );
-        order.getOrderHistory().push(orderHistory);
-        order.setUpdatedAt(new Date());
-        order.setOrderStatus(newStatus);
-        return order;
+        this.orderHistoryService = orderHistoryService;
     }
 
     verificarToken(token: string): Promise<boolean> {
@@ -42,25 +35,36 @@ export default class OrderService implements InterfaceOrderService {
     async createOrder(email: string, value: number): Promise<Order> {
         const user = await this.repository.getUser(email);
         if (!user) throw new Error(MSG.AUTH.ERROR.NOT_FOUND, { cause: 404 });
-        const newOrder = new Order(email, value);
-        return await this.repository.save(newOrder);
+        return await this.repository.save(email, value);
     }
 
-    async updateStatus(id: string, newStatus: OrderStatus): Promise<Order> {
-        const order = await this.repository.get(id);
+    async updateStatus(
+        orderId: string,
+        newStatus: OrderStatus,
+    ): Promise<Order> {
+        const order = await this.repository.get(orderId);
         if (!order) throw new Error(MSG.ORDER.ERROR.NOT_FOUND, { cause: 404 });
-        const orderUpdated = this.registryHistory(order, newStatus);
-        return orderUpdated;
+        const history =
+            await this.orderHistoryService.createOrderHistory(order);
+        const updatedOrder = await this.repository.update(
+            order.id,
+            newStatus,
+            history,
+        );
+        return updatedOrder;
     }
 
-    async getOrder(id: string): Promise<Order> {
-        const order = await this.repository.get(id);
-        if (!order) throw new Error(MSG.ORDER.ERROR.NOT_FOUND, { cause: 404 });
+    async getOrder(orderId: string): Promise<Order> {
+        const order = await this.repository.get(orderId);
+        if (!order)
+            throw new Error(MSG.ORDER.ERROR.NOT_FOUND, {
+                cause: HttpStatus.NOT_FOUND,
+            });
         return order;
     }
 
-    async cancelOrder(id: string): Promise<void> {
-        await this.updateStatus(id, OrderStatus.CANCELLED);
+    async cancelOrder(orderId: string): Promise<void> {
+        await this.updateStatus(orderId, OrderStatus.CANCELLED);
     }
 
     // Remover
