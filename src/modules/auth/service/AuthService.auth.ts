@@ -7,6 +7,7 @@ import JwtUtils from '@utils/JWT.utils';
 import type InterfaceAuthService from '../../domain/auth/InterfaceAuthService';
 import Client from '../model/entity/Client';
 import type AuthRepository from '../repository/AuthRepository';
+import { MSG } from '@utils/MessageResponse';
 
 export default class AuthService implements InterfaceAuthService {
     private repository: AuthRepository;
@@ -25,20 +26,24 @@ export default class AuthService implements InterfaceAuthService {
         this.logger.info(`Email searched: ${email}`);
         const user: Client | null = await this.findUser(email);
         if (user) {
-            const msg = 'User always was registered.';
-            this.logger.error('create user', msg);
-            throw new UserNotFoundError(msg, HttpStatus.NOT_FOUND);
+            this.logger.error('create user', MSG.AUTH.ERROR.BAD_REQUEST.USER);
+            throw new UserNotFoundError(
+                MSG.AUTH.ERROR.BAD_REQUEST.USER,
+                HttpStatus.NOT_FOUND,
+            );
         }
         const registered = await this.repository.save(name, email, password);
-        this.logger.info('User created with successful.');
+        this.logger.info(MSG.AUTH.SUCCESS.CREATED);
         return registered;
     }
     async login(email: string, password: string): Promise<string> {
         const user = await this.findUser(email);
-        if (!user) throw new UserNotFoundError('User not registered', 404);
+        if (!user) throw new UserNotFoundError(MSG.AUTH.ERROR.NOT_FOUND, 404);
         const isValidPassword = await Crypt.compare(password, user.password);
         if (!isValidPassword)
-            throw new Error('Invalid credentials', { cause: 400 });
+            throw new Error(MSG.AUTH.ERROR.BAD_REQUEST.CREDENTIALS, {
+                cause: 400,
+            });
         const token = JwtUtils.generate(user);
         return token;
     }

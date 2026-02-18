@@ -7,6 +7,8 @@ import BuildResponseError from '../../../utils/BuildResponseError';
 import Client from '../model/entity/Client';
 import UserNotFoundError from '../../../errors/UserNotFoundError';
 import Crypt from '../../../utils/Crypt';
+import { MSG } from '@utils/MessageResponse';
+import HttpError from '@errors/HttpError';
 
 export default class AuthController implements InterfaceAuthController {
     private service: AuthService;
@@ -41,7 +43,7 @@ export default class AuthController implements InterfaceAuthController {
                 maxAge: 1000 * 60 * 60,
             });
 
-            res.status(HttpStatus.OK).json({ message: 'Login successful' });
+            res.status(HttpStatus.OK).json({ message: MSG.AUTH.SUCCESS.LOGIN });
         } catch (error) {
             BuildResponseError.buildError(res, error);
         }
@@ -53,7 +55,7 @@ export default class AuthController implements InterfaceAuthController {
             secure: true,
             sameSite: 'strict',
         });
-        res.status(200).json({ message: 'User unlogged with successful.' });
+        res.status(200).json({ message: MSG.AUTH.SUCCESS.UNLOGGED });
     }
 
     reset(req: Request, res: Response): Promise<void> {
@@ -62,27 +64,19 @@ export default class AuthController implements InterfaceAuthController {
     async authStatus(req: Request, res: Response): Promise<void> {
         try {
             const token = req.cookies.token;
-            if (!token) {
-                res.status(HttpStatus.UNAUTHORIZED).json({
-                    error: 'Not authenticated',
-                });
-                return;
-            }
+            if (!token) throw new HttpError(MSG.AUTH.ERROR.UNAUTHORIZED, 403);
             const payload = this.service.validateToken(token);
             res.status(HttpStatus.OK).json({ payload });
         } catch (error) {
-            res.status(HttpStatus.UNAUTHORIZED).json({
-                error: 'Invalid token',
-            });
+            BuildResponseError.buildError(res, error);
         }
     }
     async getUser(req: Request, res: Response): Promise<void> {
         try {
-            console.log('Chamou get user');
             const { email } = req.query;
             if (!email)
                 throw new UserNotFoundError(
-                    'Email not informed',
+                    MSG.AUTH.ERROR.BAD_REQUEST.EMAIL,
                     HttpStatus.NOT_FOUND,
                 );
             const data = await this.service.findUser(email.toString());

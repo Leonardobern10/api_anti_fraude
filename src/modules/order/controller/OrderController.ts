@@ -1,26 +1,25 @@
 import type InterfaceOrderController from '@modules/domain/order/InterfaceOrderController';
 import type { Request, Response } from 'express';
-import Order from '../model/entity/Order';
 import { HttpStatus } from '@utils/HttpStatus.utils';
 import type InterfaceOrderService from '@modules/domain/order/InterfaceOrderService';
 import { OrderStatus } from '../model/OrderStatus';
-import OrderHistory from '../model/entity/OrderHistory';
 import BuildResponseError from '@utils/BuildResponseError';
 import { OrderSchema } from '../model/schema/OrderSchema';
-import z from 'zod';
 import HttpError from '@errors/HttpError';
+import { MSG } from '@utils/MessageResponse';
 
 export default class OrderController implements InterfaceOrderController {
     private service: InterfaceOrderService;
 
-    constructor(repository: InterfaceOrderService) {
-        this.service = repository;
+    constructor(service: InterfaceOrderService) {
+        this.service = service;
     }
 
     async getOrder(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
-            if (typeof id !== 'string') throw new HttpError('Invalid ID', 400);
+            if (!id || typeof id !== 'string')
+                throw new HttpError(MSG.ORDER.ERROR.INVALID_ID, 400);
             const order = await this.service.getOrder(id);
             res.status(HttpStatus.OK).json({ order });
         } catch (error) {
@@ -34,7 +33,7 @@ export default class OrderController implements InterfaceOrderController {
             OrderSchema.parse({ email, value });
             const newOrder = await this.service.createOrder(email, value);
             res.status(HttpStatus.CREATED).json({
-                success: 'Order created with successfull.',
+                success: MSG.ORDER.SUCCESS.CREATED,
                 order: newOrder,
             });
         } catch (error) {
@@ -46,13 +45,14 @@ export default class OrderController implements InterfaceOrderController {
         try {
             const { id } = req.params;
             if (!id || typeof id !== 'string')
-                throw new HttpError('Invalid ID.', 400);
-            await this.service.atualizarStatus(id, OrderStatus.CANCELLED);
-            res.status(200).json({ message: 'Order cancelled with success.' });
+                throw new HttpError(MSG.ORDER.ERROR.INVALID_ID, 400);
+            await this.service.cancelOrder(id);
+            res.status(200).json({ message: MSG.ORDER.SUCCESS.CANCELLED });
         } catch (error) {
             BuildResponseError.buildError(res, error);
         }
     }
 
+    //  Será atualizado pelo Payment
     async updateOrder(req: Request, res: Response): Promise<void> {}
 }

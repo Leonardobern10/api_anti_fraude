@@ -2,18 +2,14 @@ import type { Application } from 'express';
 import App from './app/App';
 import ApiGateway from './gateway/Gateway.router';
 import AuthController from './modules/auth/controller/AuthController';
-
 import AuthService from './modules/auth/service/AuthService.auth';
-
 import express from 'express';
 import Server from './server/Server';
 import Logger from './logs/Logger';
 import 'reflect-metadata';
-import Client from './modules/auth/model/entity/Client';
 import AuthRepository from './modules/auth/repository/AuthRepository';
 import AuthRouter from './modules/auth/router/AuthRouter';
 import AuthDB from './modules/auth/data-source.auth';
-import type InterfaceOrderRepository from '@modules/domain/order/InterfaceOrderRepository';
 import OrderRepository from '@modules/order/repository/OrderRepository';
 import OrderService from '@modules/order/service/OrderService';
 import OrderController from '@modules/order/controller/OrderController';

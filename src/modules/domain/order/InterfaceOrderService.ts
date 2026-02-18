@@ -7,7 +7,8 @@ export default interface InterfaceOrderService {
     getUserByEmail(email: string): Promise<ClientType>;
     construirOrder(user: ClientType, value: number): Order;
     createOrder(email: string, value: number): Promise<Order>;
-    atualizarStatus(id: string, newStatus: OrderStatus): Promise<Order>;
+    updateStatus(id: string, newStatus: OrderStatus): Promise<Order>;
     getOrder(id: string): Promise<Order>;
-    removerPedido(id: string): Promise<boolean>;
+    registryHistory(order: Order, newStatus: OrderStatus): Promise<Order>;
+    cancelOrder(id: string): Promise<void>;
 }
