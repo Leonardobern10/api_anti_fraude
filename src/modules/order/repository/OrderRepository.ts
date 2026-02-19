@@ -4,7 +4,6 @@ import { OrderStatus } from '../model/OrderStatus';
 import type { Repository } from 'typeorm';
 import type OrderDB from '../data-source.order';
 import type OrderHistory from '../model/entity/OrderHistory';
-import Approver from '../model/Approver';
 
 export default class OrderRepository implements InterfaceOrderRepository {
     private orderDB: OrderDB;
