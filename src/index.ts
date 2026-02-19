@@ -39,7 +39,11 @@ const authRouter = new AuthRouter(authController);
 const orderHistoryRepository = new OrderHistoryRepository(orderDB);
 const orderHistoryService = new OrderHistoryService(orderHistoryRepository);
 const orderRepository = new OrderRepository(orderDB);
-const orderService = new OrderService(orderRepository, orderHistoryService);
+const orderService = new OrderService(
+    orderRepository,
+    orderHistoryService,
+    logger,
+);
 const orderController = new OrderController(orderService);
 const orderRouter = new OrderRouter(orderController);
 
