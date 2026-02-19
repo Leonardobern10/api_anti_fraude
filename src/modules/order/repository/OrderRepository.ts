@@ -34,18 +34,16 @@ export default class OrderRepository implements InterfaceOrderRepository {
         return orderCreated;
     }
 
-    async get(id: string, user: string): Promise<Order> {
+    async get(id: string): Promise<Order | null> {
         const order = await this.repo.findOne({
             where: { id: id },
             relations: { orderHistory: true },
         });
-        Approver.approveAccess(order, user);
-        return order!;
+        return order;
     }
 
     async update(
         id: string,
-        user: string,
         newStatus: OrderStatus,
         statusPast: OrderHistory,
     ): Promise<Order> {
@@ -53,7 +51,6 @@ export default class OrderRepository implements InterfaceOrderRepository {
             where: { id: id },
             relations: { orderHistory: true },
         });
-        Approver.approveUpdate(order, user);
         order!.orderHistory.push(statusPast);
         order!.orderStatus = newStatus;
         return await this.repo.save(order!);

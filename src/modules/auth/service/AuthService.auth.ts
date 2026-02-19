@@ -1,12 +1,12 @@
-import UserNotFoundError from '@errors/UserNotFoundError';
 import type Logger from '@logs/Logger';
 import Crypt from '@utils/Crypt';
-import { HttpStatus } from '@utils/HttpStatus.utils';
 import JwtUtils from '@utils/JWT.utils';
 import type InterfaceAuthService from '../../domain/auth/InterfaceAuthService';
 import Client from '../model/entity/Client';
 import type AuthRepository from '../repository/AuthRepository';
 import { MSG } from '@utils/MessageResponse';
+import NotFoundError from '@errors/NotFoundError';
+import BadRequestError from '@errors/BadRequestError';
 
 export default class AuthService implements InterfaceAuthService {
     private repository: AuthRepository;
@@ -26,10 +26,7 @@ export default class AuthService implements InterfaceAuthService {
         const user: Client | null = await this.findUser(email);
         if (user) {
             this.logger.error('create user', MSG.AUTH.ERROR.BAD_REQUEST.USER);
-            throw new UserNotFoundError(
-                MSG.AUTH.ERROR.BAD_REQUEST.USER,
-                HttpStatus.NOT_FOUND,
-            );
+            throw new NotFoundError(MSG.AUTH.ERROR.BAD_REQUEST.USER);
         }
         const registered = await this.repository.save(name, email, password);
         this.logger.info(MSG.AUTH.SUCCESS.CREATED);
@@ -37,16 +34,10 @@ export default class AuthService implements InterfaceAuthService {
     }
     async login(email: string, password: string): Promise<string> {
         const user = await this.findUser(email);
-        if (!user)
-            throw new UserNotFoundError(
-                MSG.AUTH.ERROR.NOT_FOUND,
-                HttpStatus.NOT_FOUND,
-            );
+        if (!user) throw new NotFoundError(MSG.AUTH.ERROR.NOT_FOUND);
         const isValidPassword = await Crypt.compare(password, user.password);
         if (!isValidPassword)
-            throw new Error(MSG.AUTH.ERROR.BAD_REQUEST.CREDENTIALS, {
-                cause: HttpStatus.BAD_REQUEST,
-            });
+            throw new BadRequestError(MSG.AUTH.ERROR.BAD_REQUEST.CREDENTIALS);
         const token = JwtUtils.generate(user);
         return token;
     }

@@ -5,11 +5,12 @@ import { HttpStatus } from '../../../utils/HttpStatus.utils';
 import { RegisterSchema } from '../model/schema/RegisterSchema';
 import BuildResponseError from '../../../utils/BuildResponseError';
 import Client from '../model/entity/Client';
-import UserNotFoundError from '../../../errors/UserNotFoundError';
 import Crypt from '../../../utils/Crypt';
 import { MSG } from '@utils/MessageResponse';
 import HttpError from '@errors/HttpError';
 import { LoginSchema } from '../model/schema/LoginSchema';
+import UnauthorizedError from '@errors/UnauthorizedError';
+import NotFoundError from '@errors/NotFoundError';
 
 export default class AuthController implements InterfaceAuthController {
     private service: AuthService;
@@ -68,10 +69,7 @@ export default class AuthController implements InterfaceAuthController {
         try {
             const token = req.cookies.token;
             if (!token)
-                throw new HttpError(
-                    MSG.AUTH.ERROR.UNAUTHORIZED,
-                    HttpStatus.UNAUTHORIZED,
-                );
+                throw new UnauthorizedError(MSG.AUTH.ERROR.UNAUTHORIZED);
             const payload = this.service.validateToken(token);
             res.status(HttpStatus.OK).json({ payload });
         } catch (error) {
@@ -82,10 +80,7 @@ export default class AuthController implements InterfaceAuthController {
         try {
             const { email } = req.query;
             if (!email)
-                throw new UserNotFoundError(
-                    MSG.AUTH.ERROR.BAD_REQUEST.EMAIL,
-                    HttpStatus.NOT_FOUND,
-                );
+                throw new NotFoundError(MSG.AUTH.ERROR.BAD_REQUEST.EMAIL);
             const data = await this.service.findUser(email.toString());
             res.status(HttpStatus.OK).json({ data });
         } catch (error) {

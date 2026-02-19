@@ -4,7 +4,9 @@ import { HttpStatus } from '@utils/HttpStatus.utils';
 import { OrderStatus } from './OrderStatus';
 
 export default class Approver {
-    private static approveExistance(order: Order | null): void {
+    private static approveExistence(
+        order: Order | null,
+    ): asserts order is Order {
         if (!order)
             throw new Error(MSG.ORDER.ERROR.NOT_FOUND, {
                 cause: HttpStatus.NOT_FOUND,
@@ -24,7 +26,7 @@ export default class Approver {
     }
 
     public static approveAccess(order: Order | null, user: string) {
-        this.approveExistance(order);
+        this.approveExistence(order);
         this.approveAuthorization(order!, user);
     }
 

@@ -4,10 +4,9 @@ import type OrderHistory from '@modules/order/model/entity/OrderHistory';
 
 export default interface InterfaceOrderRepository {
     save(user: string, value: number): Promise<Order>;
-    get(id: string, user: string): Promise<Order>;
+    get(id: string): Promise<Order | null>;
     update(
         id: string,
-        user: string,
         newStatus: OrderStatus,
         statusPast: OrderHistory,
     ): Promise<Order>;

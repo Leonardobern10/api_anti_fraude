@@ -1,6 +1,7 @@
 import type { Response } from 'express';
 import { ZodError } from 'zod';
 import { HttpStatus } from './HttpStatus.utils';
+import BaseError from '@errors/BaseError';
 
 export default class BuildResponseError {
     static buildError(res: Response, error: unknown): Response {
@@ -12,15 +13,14 @@ export default class BuildResponseError {
                 reason: errorData?.code,
                 fieldError: errorData?.path[0],
             });
-        } else {
-            const errorRes = error as Error;
+        } else if (error instanceof BaseError) {
             return res
-                .status(
-                    typeof Number(errorRes.cause) === 'number'
-                        ? Number(errorRes.cause)
-                        : HttpStatus.BAD_REQUEST,
-                )
-                .json({ error: errorRes.message });
+                .status(error.statusCode || HttpStatus.INTERNAL_SERVER)
+                .json({ error: error.message });
+        } else {
+            return res
+                .status(HttpStatus.INTERNAL_SERVER)
+                .json({ error: 'Error on processing request.' });
         }
     }
 }

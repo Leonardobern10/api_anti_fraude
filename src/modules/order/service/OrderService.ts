@@ -5,6 +5,7 @@ import type InterfaceOrderRepository from '@modules/domain/order/InterfaceOrderR
 import { MSG } from '@utils/MessageResponse';
 import type InterfaceOrderHistoryService from '@modules/domain/order/InterfaceOrderHistoryService';
 import { HttpStatus } from '@utils/HttpStatus.utils';
+import Approver from '../model/Approver';
 
 export default class OrderService implements InterfaceOrderService {
     private repository: InterfaceOrderRepository;
@@ -27,16 +28,13 @@ export default class OrderService implements InterfaceOrderService {
         user: string,
         newStatus: OrderStatus,
     ): Promise<Order> {
-        const order = await this.repository.get(orderId, user);
-        if (!order)
-            throw new Error(MSG.ORDER.ERROR.NOT_FOUND, {
-                cause: HttpStatus.NOT_FOUND,
-            });
-        const history =
-            await this.orderHistoryService.createOrderHistory(order);
+        const order = await this.repository.get(orderId);
+        Approver.approveUpdate(order, user);
+        const history = await this.orderHistoryService.createOrderHistory(
+            order!,
+        );
         const updatedOrder = await this.repository.update(
-            order.id,
-            user,
+            order!.id,
             newStatus,
             history,
         );
@@ -48,6 +46,8 @@ export default class OrderService implements InterfaceOrderService {
     }
 
     async getOrder(orderId: string, user: string): Promise<Order> {
-        return await this.repository.get(orderId, user);
+        const order = await this.repository.get(orderId);
+        Approver.approveAccess(order, user);
+        return order!;
     }
 }
