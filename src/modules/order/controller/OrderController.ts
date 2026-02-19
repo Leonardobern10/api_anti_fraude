@@ -14,6 +14,36 @@ export default class OrderController implements InterfaceOrderController {
         this.service = service;
     }
 
+    /**
+     * @swagger
+     * /orders/{id}:
+     *   get:
+     *     summary: Buscar pedido por ID
+     *     tags: [Orders]
+     *     security:
+     *       - cookieAuth: []
+     *     parameters:
+     *       - name: id
+     *         in: path
+     *         required: true
+     *         schema:
+     *           type: string
+     *         example: c900bc3b-a1f7-4dfb-b074-066b3f6b1950
+     *     responses:
+     *       200:
+     *         description: Pedido encontrado
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 order:
+     *                   $ref: '#/components/schemas/OrderResponse'
+     *       400:
+     *         description: ID inválido
+     *       404:
+     *         description: Pedido não encontrado
+     */
     async getOrder(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
@@ -30,6 +60,35 @@ export default class OrderController implements InterfaceOrderController {
         }
     }
 
+    /**
+     * @swagger
+     * /orders:
+     *   post:
+     *     summary: Criar um novo pedido
+     *     tags: [Orders]
+     *     security:
+     *       - cookieAuth: []
+     *     requestBody:
+     *       required: true
+     *       content:
+     *         application/json:
+     *           schema:
+     *             $ref: '#/components/schemas/CreateOrderDTO'
+     *     responses:
+     *       201:
+     *         description: Pedido criado com sucesso
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 success:
+     *                   type: string
+     *                 order:
+     *                   $ref: '#/components/schemas/OrderResponse'
+     *       400:
+     *         description: Dados inválidos
+     */
     async createOrder(req: Request, res: Response): Promise<void> {
         try {
             const { value } = req.body;
@@ -45,6 +104,29 @@ export default class OrderController implements InterfaceOrderController {
         }
     }
 
+    /**
+     * @swagger
+     * /orders/{id}/cancel:
+     *   patch:
+     *     summary: Cancelar um pedido
+     *     tags: [Orders]
+     *     security:
+     *       - cookieAuth: []
+     *     parameters:
+     *       - name: id
+     *         in: path
+     *         required: true
+     *         schema:
+     *           type: string
+     *         example: c900bc3b-a1f7-4dfb-b074-066b3f6b1950
+     *     responses:
+     *       200:
+     *         description: Pedido cancelado com sucesso
+     *       400:
+     *         description: ID inválido
+     *       403:
+     *         description: Operação não autorizada
+     */
     async cancelOrder(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;

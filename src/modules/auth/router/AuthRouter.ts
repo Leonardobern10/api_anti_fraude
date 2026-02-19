@@ -4,6 +4,12 @@ import type AuthController from '../controller/AuthController';
 import AuthMiddleWare from '../../../gateway/middlewares/AuthMiddleware';
 import { PATH } from '@utils/Path';
 
+/**
+ * @swagger
+ * tags:
+ *   name: Auth
+ *   description: Gestão de usuários e autenticação
+ */
 export default class AuthRouter {
     private controller: AuthController;
     private router: Router;
@@ -14,6 +20,22 @@ export default class AuthRouter {
         this.registerRoutes();
     }
 
+    /**
+     * @swagger
+     * /auth/register:
+     *   post:
+     *     tags: [Auth]
+     *     summary: Registrar novo usuário
+     *     requestBody:
+     *       required: true
+     *       content:
+     *         application/json:
+     *           schema:
+     *             $ref: '#/components/schemas/RegisterDTO'
+     *     responses:
+     *       201:
+     *         description: Usuário criado
+     */
     public createUser() {
         this.router.post(
             PATH.AUTH.REGISTER,
@@ -23,6 +45,22 @@ export default class AuthRouter {
         );
     }
 
+    /**
+     * @swagger
+     * /auth/user:
+     *   get:
+     *     tags: [Auth]
+     *     summary: Buscar usuário autenticado
+     *     security:
+     *       - cookieAuth: []
+     *     responses:
+     *       200:
+     *         description: Usuário encontrado
+     *         content:
+     *           application/json:
+     *             schema:
+     *               $ref: '#/components/schemas/ClientResponse'
+     */
     public getUser() {
         this.router.get(
             PATH.AUTH.GET,
@@ -37,12 +75,40 @@ export default class AuthRouter {
         return this.router;
     }
 
+    /**
+     * @swagger
+     * /auth/login:
+     *   post:
+     *     tags: [Auth]
+     *     summary: Login do usuário
+     *     requestBody:
+     *       required: true
+     *       content:
+     *         application/json:
+     *           schema:
+     *             $ref: '#/components/schemas/LoginDTO'
+     *     responses:
+     *       200:
+     *         description: Login realizado com sucesso
+     */
     public login() {
         this.router.post(PATH.AUTH.LOGIN, async (req, res) => {
             this.controller.login(req, res);
         });
     }
 
+    /**
+     * @swagger
+     * /auth/status:
+     *   get:
+     *     tags: [Auth]
+     *     summary: Verificar status do usuário autenticado
+     *     security:
+     *       - cookieAuth: []
+     *     responses:
+     *       200:
+     *         description: Usuário autenticado
+     */
     public authStatus() {
         this.router.get(
             PATH.AUTH.AUTH_STATUS,
@@ -53,6 +119,18 @@ export default class AuthRouter {
         );
     }
 
+    /**
+     * @swagger
+     * /auth/logout:
+     *   post:
+     *     tags: [Auth]
+     *     summary: Realizar logout do usuário
+     *     security:
+     *       - cookieAuth: []
+     *     responses:
+     *       200:
+     *         description: Logout realizado com sucesso
+     */
     public logout() {
         this.router.post(
             PATH.AUTH.LOGOUT,
