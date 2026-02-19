@@ -18,6 +18,9 @@ import { PATH } from '@utils/Path';
 import OrderDB from '@modules/order/data-source.order';
 import OrderHistoryRepository from '@modules/order/repository/OrderHistoryRepository';
 import OrderHistoryService from '@modules/order/service/OrderHistoryService';
+import 'dotenv/config';
+
+const appPort = process.env.SERVER_PORT || 3000;
 
 // Logs
 const logger: Logger = new Logger();
@@ -48,7 +51,7 @@ gateway.addRoute(PATH.ORDER.BASE, orderRouter.getRouter());
 // gateway.addRoute('/users', userRouter.getRouter());
 const exp: Application = express();
 const server = new Server(exp);
-const app = new App(3000, server, gateway);
+const app = new App(appPort, server, gateway);
 
 //Bootstrap
 app.init();
