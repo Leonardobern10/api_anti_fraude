@@ -24,18 +24,17 @@ Após o pagamento ser iniciado:
 - O cliente deve conseguir acompanhar o status
 
 4️⃣ Antifraude
-Queremos regras como:
+Regras:
 - Valor muito alto → maior risco
 - Muitas compras em curto período → risco
 - Histórico de rejeições → risco
 - Múltiplas contas no mesmo IP → risco
 
 Se for considerado suspeito: Pedido deve ser recusado
-
 Se estiver ok: Pedido aprovado e acesso liberado
 
-## 5️⃣ Histórico e rastreabilidade
-Precisamos:
+5️⃣ Histórico e rastreabilidade
+A aplicação permite:
 - Saber quando o pedido foi criado
 - Quando foi enviado para análise
 - Qual foi o score de risco
@@ -44,25 +43,25 @@ Precisamos:
 
 Isso é importante para auditoria.
 
-## 6️⃣ Dashboard administrativo
-Queremos um painel simples onde possamos:
+6️⃣ Dashboard administrativo
+A aplicação disponibiliza um painel simples onde será possível:
 - Ver todos os pedidos
 - Filtrar por status
 - Ver score antifraude
 - Ver histórico do usuário
 - Buscar por e-mail
 
-# 🔐 Segurança
+🔐 Segurança
 É fundamental que:
 - Dados sensíveis não fiquem expostos 
 - A autenticação seja segura
 - Tenhamos registro de tentativas suspeitas
 - A aplicação suporte crescimento futuro
 
-# 📈 Escalabilidade
-Nosso volume atual é pequeno, mas queremos:
+📈 Escalabilidade
+O volume atual é pequeno, mas o projeto terá:
 - Estrutura preparada para crescer
-- Processamento assíncrono se necessário
+- Processamento assíncrono
 - Separação entre API principal e antifraude
 
 ## Entendendo as partes interessadas
