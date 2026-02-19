@@ -1,6 +1,6 @@
 # API ANTI FRAUDE
 O projeto visa garantir segurança no pagamento de pedidos recebidos, evitando que as aprovações automáticos estejam sujeitas a **fraudes, chagebacks, compras suspeitas com cartõs roubados e que usuários criem múltiplas contas para explorar promoçoes**.
-O Sistema desenvolvido deve é capaz de gerenciar os pedidos recebidos e aplicar uma camada de análise antifraude antes de liberar definitivamente o acesso ao produto.
+O Sistema desenvolvido é capaz de gerenciar os pedidos recebidos e aplicar uma camada de análise antifraude antes de liberar definitivamente o acesso ao produto.
 
 ## Funcionalidades
 Para atender às expectativas de sua correta aplicação, o sistema deve prover:
