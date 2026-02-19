@@ -23,9 +23,13 @@ export default class Approver {
             });
     }
 
-    public static approve(order: Order | null, user: string) {
+    public static approveAccess(order: Order | null, user: string) {
         this.approveExistance(order);
-        this.approveStatus(order!);
         this.approveAuthorization(order!, user);
+    }
+
+    public static approveUpdate(order: Order | null, user: string) {
+        this.approveAccess(order, user);
+        this.approveStatus(order!);
     }
 }

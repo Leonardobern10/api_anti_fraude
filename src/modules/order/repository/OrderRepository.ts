@@ -39,7 +39,7 @@ export default class OrderRepository implements InterfaceOrderRepository {
             where: { id: id },
             relations: { orderHistory: true },
         });
-        Approver.approve(order, user);
+        Approver.approveAccess(order, user);
         return order!;
     }
 
@@ -53,7 +53,7 @@ export default class OrderRepository implements InterfaceOrderRepository {
             where: { id: id },
             relations: { orderHistory: true },
         });
-        Approver.approve(order, user);
+        Approver.approveUpdate(order, user);
         order!.orderHistory.push(statusPast);
         order!.orderStatus = newStatus;
         return await this.repo.save(order!);
