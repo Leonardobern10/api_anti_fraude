@@ -19,6 +19,31 @@ export default class AuthController implements InterfaceAuthController {
         this.service = service;
     }
 
+    /**
+     * @swagger
+     * /auth/register:
+     *   post:
+     *     summary: Registrar novo usuário
+     *     tags: [Auth]
+     *     requestBody:
+     *       required: true
+     *       content:
+     *         application/json:
+     *           schema:
+     *             $ref: '#/components/schemas/RegisterDTO'
+     *     responses:
+     *       201:
+     *         description: Usuário criado com sucesso
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 data:
+     *                   $ref: '#/components/schemas/ClientResponse'
+     *       400:
+     *         description: Dados inválidos
+     */
     async register(req: Request, res: Response): Promise<void> {
         try {
             const { name, email, password } = req.body;
@@ -33,6 +58,29 @@ export default class AuthController implements InterfaceAuthController {
             BuildResponseError.buildError(res, error);
         }
     }
+    /**
+     * @swagger
+     * /auth/login:
+     *   post:
+     *     summary: Realizar login do usuário
+     *     tags: [Auth]
+     *     requestBody:
+     *       required: true
+     *       content:
+     *         application/json:
+     *           schema:
+     *             $ref: '#/components/schemas/LoginDTO'
+     *     responses:
+     *       200:
+     *         description: Login realizado com sucesso (cookie JWT retornado)
+     *         headers:
+     *           Set-Cookie:
+     *             schema:
+     *               type: string
+     *               example: token=jwt_token; HttpOnly
+     *       401:
+     *         description: Credenciais inválidas
+     */
     async login(req: Request, res: Response): Promise<void> {
         try {
             const { email, password } = req.body;
@@ -52,6 +100,16 @@ export default class AuthController implements InterfaceAuthController {
         }
     }
 
+    /**
+     * @swagger
+     * /auth/logout:
+     *   post:
+     *     summary: Logout do usuário
+     *     tags: [Auth]
+     *     responses:
+     *       200:
+     *         description: Usuário deslogado com sucesso
+     */
     logout(req: Request, res: Response): void {
         res.clearCookie('token', {
             httpOnly: true,
@@ -65,6 +123,20 @@ export default class AuthController implements InterfaceAuthController {
         throw new Error('Method not implemented.');
     }
 
+    /**
+     * @swagger
+     * /auth/status:
+     *   get:
+     *     summary: Verificar status de autenticação
+     *     tags: [Auth]
+     *     security:
+     *       - cookieAuth: []
+     *     responses:
+     *       200:
+     *         description: Token válido
+     *       401:
+     *         description: Usuário não autenticado
+     */
     async authStatus(req: Request, res: Response): Promise<void> {
         try {
             const token = req.cookies.token;
@@ -76,6 +148,26 @@ export default class AuthController implements InterfaceAuthController {
             BuildResponseError.buildError(res, error);
         }
     }
+
+    /**
+     * @swagger
+     * /auth/user:
+     *   get:
+     *     summary: Buscar usuário por email
+     *     tags: [Auth]
+     *     parameters:
+     *       - name: email
+     *         in: query
+     *         required: true
+     *         schema:
+     *           type: string
+     *         example: leonardo@email.com
+     *     responses:
+     *       200:
+     *         description: Usuário encontrado
+     *       404:
+     *         description: Usuário não encontrado
+     */
     async getUser(req: Request, res: Response): Promise<void> {
         try {
             const { email } = req.query;
