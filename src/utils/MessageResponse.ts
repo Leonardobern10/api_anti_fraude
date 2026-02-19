@@ -8,6 +8,7 @@ export const MSG = {
                 USER: 'User is already registered.',
                 CREDENTIALS: 'Invalid credentials',
             },
+            INVALID_TOKEN: 'Invalid token.',
         },
         SUCCESS: {
             LOGIN: 'Login successful',

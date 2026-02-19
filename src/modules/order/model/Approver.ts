@@ -1,0 +1,31 @@
+import { MSG } from '@utils/MessageResponse';
+import type Order from './entity/Order';
+import { HttpStatus } from '@utils/HttpStatus.utils';
+import { OrderStatus } from './OrderStatus';
+
+export default class Approver {
+    private static approveExistance(order: Order | null): void {
+        if (!order)
+            throw new Error(MSG.ORDER.ERROR.NOT_FOUND, {
+                cause: HttpStatus.NOT_FOUND,
+            });
+    }
+    private static approveStatus(order: Order) {
+        if (order.orderStatus === OrderStatus.CANCELLED)
+            throw new Error(MSG.ORDER.ERROR.UNAUTHORIZED, {
+                cause: HttpStatus.UNAUTHORIZED,
+            });
+    }
+    private static approveAuthorization(order: Order, user: string) {
+        if (order.user !== user)
+            throw new Error(MSG.AUTH.ERROR.UNAUTHORIZED, {
+                cause: HttpStatus.UNAUTHORIZED,
+            });
+    }
+
+    public static approve(order: Order | null, user: string) {
+        this.approveExistance(order);
+        this.approveStatus(order!);
+        this.approveAuthorization(order!, user);
+    }
+}

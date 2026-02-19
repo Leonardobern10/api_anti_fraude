@@ -16,7 +16,9 @@ export default class AuthRepository {
             await this.authDB.init();
             this.repo = this.authDB.getRepository();
             if (!this.repo)
-                throw new Error('Was not possible to get Repository');
+                throw new Error('Was not possible to get Repository', {
+                    cause: 500,
+                });
         } catch (error) {
             console.error('Error on Repository', error);
         }

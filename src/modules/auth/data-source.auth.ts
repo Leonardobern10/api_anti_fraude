@@ -2,7 +2,7 @@ import { DataSource, Repository } from 'typeorm';
 import Client from './model/entity/Client';
 import type InterfaceModuleDB from '@modules/domain/ModuleDB';
 
-export default class AuthDB implements InterfaceModuleDB<Client> {
+export default class AuthDB implements InterfaceModuleDB {
     private datasource: DataSource;
 
     constructor() {

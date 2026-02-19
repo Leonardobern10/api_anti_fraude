@@ -1,11 +1,10 @@
 import z from 'zod';
+import { SchemaErrors } from './SchemaErrors';
 
 export const RegisterSchema = z.object({
-    name: z
-        .string('Name has been String')
-        .min(2, 'This field is too short. Min: 2 characters'),
-    email: z.email('Email is not valid'),
-    password: z.string().min(8, 'This field is too short. Min: 8 characters'),
+    name: z.string(SchemaErrors.NAME.STRING).min(2, SchemaErrors.NAME.LENGTH),
+    email: z.email(SchemaErrors.EMAIL),
+    password: z.string().min(8, SchemaErrors.PASSWORD.LENGTH),
 });
 
 export type RegisterType = z.infer<typeof RegisterSchema>;

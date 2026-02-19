@@ -17,12 +17,13 @@ export default class OrderController implements InterfaceOrderController {
     async getOrder(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
+            const user = (req as any).user.email;
             if (!id || typeof id !== 'string')
                 throw new HttpError(
                     MSG.ORDER.ERROR.INVALID_ID,
                     HttpStatus.BAD_REQUEST,
                 );
-            const order = await this.service.getOrder(id);
+            const order = await this.service.getOrder(id, user);
             res.status(HttpStatus.OK).json({ order });
         } catch (error) {
             BuildResponseError.buildError(res, error);
@@ -31,9 +32,10 @@ export default class OrderController implements InterfaceOrderController {
 
     async createOrder(req: Request, res: Response): Promise<void> {
         try {
-            const { email, value } = req.body;
-            OrderSchema.parse({ email, value });
-            const newOrder = await this.service.createOrder(email, value);
+            const { value } = req.body;
+            const user = this.getUser(req);
+            OrderSchema.parse({ email: user, value });
+            const newOrder = await this.service.createOrder(user, value);
             res.status(HttpStatus.CREATED).json({
                 success: MSG.ORDER.SUCCESS.CREATED,
                 order: newOrder,
@@ -46,12 +48,13 @@ export default class OrderController implements InterfaceOrderController {
     async cancelOrder(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
+            const user = this.getUser(req);
             if (!id || typeof id !== 'string')
                 throw new HttpError(
                     MSG.ORDER.ERROR.INVALID_ID,
                     HttpStatus.BAD_REQUEST,
                 );
-            await this.service.cancelOrder(id);
+            await this.service.cancelOrder(id, user);
             res.status(HttpStatus.OK).json({
                 message: MSG.ORDER.SUCCESS.CANCELLED,
             });
@@ -62,4 +65,8 @@ export default class OrderController implements InterfaceOrderController {
 
     //  Será atualizado pelo Payment
     async updateOrder(req: Request, res: Response): Promise<void> {}
+
+    private getUser(req: Request): string {
+        return (req as any).user.email;
+    }
 }

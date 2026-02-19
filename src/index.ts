@@ -41,9 +41,9 @@ const orderController = new OrderController(orderService);
 const orderRouter = new OrderRouter(orderController);
 
 // GATEWAY
-const gateway = new ApiGateway('/api/v1');
-gateway.addRoute(PATH.AUTH.base, authRouter.getRouter());
-gateway.addRoute(PATH.ORDER.base, orderRouter.getRouter());
+const gateway = new ApiGateway(PATH.GATEWAY);
+gateway.addRoute(PATH.AUTH.BASE, authRouter.getRouter());
+gateway.addRoute(PATH.ORDER.BASE, orderRouter.getRouter());
 
 // gateway.addRoute('/users', userRouter.getRouter());
 const exp: Application = express();

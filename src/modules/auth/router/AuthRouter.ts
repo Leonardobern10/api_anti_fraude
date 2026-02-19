@@ -2,6 +2,7 @@ import type { Router, Request, Response } from 'express';
 import express from 'express';
 import type AuthController from '../controller/AuthController';
 import AuthMiddleWare from '../../../gateway/middlewares/AuthMiddleware';
+import { PATH } from '@utils/Path';
 
 export default class AuthRouter {
     private controller: AuthController;
@@ -14,14 +15,17 @@ export default class AuthRouter {
     }
 
     public createUser() {
-        this.router.post('/register', async (req: Request, res: Response) => {
-            this.controller.register(req, res);
-        });
+        this.router.post(
+            PATH.AUTH.REGISTER,
+            async (req: Request, res: Response) => {
+                this.controller.register(req, res);
+            },
+        );
     }
 
     public getUser() {
         this.router.get(
-            '/user',
+            PATH.AUTH.GET,
             AuthMiddleWare.checkAuthentication,
             async (req: Request, res: Response) => {
                 this.controller.getUser(req, res);
@@ -29,25 +33,19 @@ export default class AuthRouter {
         );
     }
 
-    public test() {
-        this.router.get('/test', async (req: Request, res: Response) => {
-            this.controller.test(req, res);
-        });
-    }
-
     public getRouter() {
         return this.router;
     }
 
     public login() {
-        this.router.post('/login', async (req, res) => {
+        this.router.post(PATH.AUTH.LOGIN, async (req, res) => {
             this.controller.login(req, res);
         });
     }
 
     public authStatus() {
         this.router.get(
-            '/authStatus',
+            PATH.AUTH.AUTH_STATUS,
             AuthMiddleWare.checkAuthentication,
             async (req, res) => {
                 this.controller.authStatus(req, res);
@@ -57,7 +55,7 @@ export default class AuthRouter {
 
     public logout() {
         this.router.post(
-            '/logout',
+            PATH.AUTH.LOGOUT,
             AuthMiddleWare.checkAuthentication,
             (req, res) => {
                 this.controller.logout(req, res);
@@ -66,7 +64,6 @@ export default class AuthRouter {
     }
 
     private registerRoutes() {
-        this.test();
         this.createUser();
         this.getUser();
         this.login();

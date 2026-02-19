@@ -9,6 +9,7 @@ import UserNotFoundError from '../../../errors/UserNotFoundError';
 import Crypt from '../../../utils/Crypt';
 import { MSG } from '@utils/MessageResponse';
 import HttpError from '@errors/HttpError';
+import { LoginSchema } from '../model/schema/LoginSchema';
 
 export default class AuthController implements InterfaceAuthController {
     private service: AuthService;
@@ -34,6 +35,7 @@ export default class AuthController implements InterfaceAuthController {
     async login(req: Request, res: Response): Promise<void> {
         try {
             const { email, password } = req.body;
+            LoginSchema.parse({ email, password });
             const token: string = await this.service.login(email, password);
 
             res.cookie('token', token, {
@@ -61,10 +63,15 @@ export default class AuthController implements InterfaceAuthController {
     reset(req: Request, res: Response): Promise<void> {
         throw new Error('Method not implemented.');
     }
+
     async authStatus(req: Request, res: Response): Promise<void> {
         try {
             const token = req.cookies.token;
-            if (!token) throw new HttpError(MSG.AUTH.ERROR.UNAUTHORIZED, 403);
+            if (!token)
+                throw new HttpError(
+                    MSG.AUTH.ERROR.UNAUTHORIZED,
+                    HttpStatus.UNAUTHORIZED,
+                );
             const payload = this.service.validateToken(token);
             res.status(HttpStatus.OK).json({ payload });
         } catch (error) {
@@ -84,9 +91,5 @@ export default class AuthController implements InterfaceAuthController {
         } catch (error) {
             BuildResponseError.buildError(res, error);
         }
-    }
-
-    public test(req: Request, res: Response) {
-        return res.status(200).json({ message: this.service.getUser() });
     }
 }

@@ -1,3 +1,4 @@
+import AuthMiddleWare from '@gateway/middlewares/AuthMiddleware';
 import type InterfaceOrderController from '@modules/domain/order/InterfaceOrderController';
 import type { Router, Request, Response } from 'express';
 import express from 'express';
@@ -20,27 +21,43 @@ export default class OrderRouter {
     }
 
     public createOrder() {
-        this.router.post('/', async (req: Request, res: Response) => {
-            this.controller.createOrder(req, res);
-        });
+        this.router.post(
+            '/',
+            AuthMiddleWare.checkAuthentication,
+            async (req: Request, res: Response) => {
+                this.controller.createOrder(req, res);
+            },
+        );
     }
 
     public getOrder() {
-        this.router.get('/:id', async (req: Request, res: Response) => {
-            this.controller.getOrder(req, res);
-        });
+        this.router.get(
+            '/:id',
+            AuthMiddleWare.checkAuthentication,
+            async (req: Request, res: Response) => {
+                this.controller.getOrder(req, res);
+            },
+        );
     }
 
     public deleteOrder() {
-        this.router.delete('/:id', async (req: Request, res: Response) => {
-            this.controller.cancelOrder(req, res);
-        });
+        this.router.delete(
+            '/:id',
+            AuthMiddleWare.checkAuthentication,
+            async (req: Request, res: Response) => {
+                this.controller.cancelOrder(req, res);
+            },
+        );
     }
 
     public updateOrder() {
-        this.router.patch('/:id', async (req: Request, res: Response) => {
-            this.controller.updateOrder(req, res);
-        });
+        this.router.patch(
+            '/:id',
+            AuthMiddleWare.checkAuthentication,
+            async (req: Request, res: Response) => {
+                this.controller.updateOrder(req, res);
+            },
+        );
     }
 
     public getRouter(): Router {
