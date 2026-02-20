@@ -7,7 +7,6 @@ import BuildResponseError from '../../../utils/BuildResponseError';
 import Client from '../model/entity/Client';
 import Crypt from '../../../utils/Crypt';
 import { MSG } from '@utils/MessageResponse';
-import HttpError from '@errors/HttpError';
 import { LoginSchema } from '../model/schema/LoginSchema';
 import UnauthorizedError from '@errors/UnauthorizedError';
 import NotFoundError from '@errors/NotFoundError';
