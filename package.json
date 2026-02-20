@@ -1,7 +1,7 @@
 {
     "name": "sistema-anti-fraude",
     "version": "1.0.0",
-    "description": "",
+    "description": "O sistema visa combater fraudes nos pagamentos pela plataforma.",
     "main": "index.js",
     "scripts": {
         "test": "vitest",
@@ -10,7 +10,7 @@
         "build": "tsc"
     },
     "keywords": [],
-    "author": "",
+    "author": "Leonardo Bernardo",
     "license": "ISC",
     "type": "module",
     "devDependencies": {

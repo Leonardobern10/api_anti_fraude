@@ -17,7 +17,7 @@ export default class App {
             this.registerGateway();
             this.server.init(this.port);
         } catch (error) {
-            console.error(error);
+            throw new Error('Error on init application: ' + error);
         }
     }
 
