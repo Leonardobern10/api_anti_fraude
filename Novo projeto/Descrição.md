@@ -21,9 +21,9 @@ Precisamos de um sistema próprio para gerenciar pedidos e aplicar uma camada de
 
 ## 2️⃣ Gestão de pedidos
 Quando um usuário compra:
-- Um pedido deve ser criado
-- O status inicial deve ser “Pendente”
-- O sistema deve registrar valor, data e usuário
+- Um pedido deve ser criado **
+- O status inicial deve ser “Pendente” **
+- O sistema deve registrar valor, data e usuário **
 
 ## 3️⃣ Processamento de pagamento
 Após o pagamento ser iniciado:

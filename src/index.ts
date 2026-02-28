@@ -19,6 +19,12 @@ import OrderDB from '@modules/order/data-source.order';
 import OrderHistoryRepository from '@modules/order/repository/OrderHistoryRepository';
 import OrderHistoryService from '@modules/order/service/OrderHistoryService';
 import 'dotenv/config';
+import CheckoutRepository from '@modules/checkout/repository/CheckoutRepository';
+import CheckoutService from '@modules/checkout/service/CheckoutService';
+import UserQueryLocal from '@modules/domain/auth/adapter/UserQueryLocal';
+import OrderQueryLocal from '@modules/domain/order/adapter/OrderQueryLocal';
+import CheckoutController from '@modules/checkout/controller/CheckoutController';
+import CheckoutRouter from '@modules/checkout/router/CheckoutRouter';
 
 const appPort = process.env.SERVER_PORT || 3000;
 
@@ -47,10 +53,23 @@ const orderService = new OrderService(
 const orderController = new OrderController(orderService);
 const orderRouter = new OrderRouter(orderController);
 
+// Module - CHECKOUT
+const checkoutRepository = new CheckoutRepository();
+const checkoutUserQuery = new UserQueryLocal(authRepository);
+const checkoutOrderQuery = new OrderQueryLocal(orderRepository);
+const checkoutService = new CheckoutService(
+    checkoutRepository,
+    checkoutUserQuery,
+    checkoutOrderQuery,
+);
+const checkoutController = new CheckoutController(checkoutService);
+const checkoutRouter = new CheckoutRouter(checkoutController);
+
 // GATEWAY
 const gateway = new ApiGateway(PATH.GATEWAY);
 gateway.addRoute(PATH.AUTH.BASE, authRouter.getRouter());
 gateway.addRoute(PATH.ORDER.BASE, orderRouter.getRouter());
+gateway.addRoute('/checkout', checkoutRouter.getRouter());
 
 // gateway.addRoute('/users', userRouter.getRouter());
 const exp: Application = express();

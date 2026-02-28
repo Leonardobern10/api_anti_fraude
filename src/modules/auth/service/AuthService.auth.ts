@@ -7,6 +7,7 @@ import type AuthRepository from '../repository/AuthRepository';
 import { MSG } from '@utils/MessageResponse';
 import NotFoundError from '@errors/NotFoundError';
 import BadRequestError from '@errors/BadRequestError';
+import type { JwtPayload } from 'jsonwebtoken';
 
 export default class AuthService implements InterfaceAuthService {
     private repository: AuthRepository;
@@ -50,7 +51,7 @@ export default class AuthService implements InterfaceAuthService {
         throw new Error('Method not implemented.');
     }
 
-    validateToken(token: string) {
+    validateToken(token: string): String | JwtPayload {
         return JwtUtils.verify(token);
     }
 
