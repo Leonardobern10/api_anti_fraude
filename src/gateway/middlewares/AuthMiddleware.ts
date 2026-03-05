@@ -11,6 +11,8 @@ export default class AuthMiddleWare {
         next: NextFunction,
     ) {
         try {
+            console.log('Middleware executado!');
+
             const token = req.cookies.token;
             if (!token) throw new BadRequestError(MSG.AUTH.ERROR.INVALID_TOKEN);
 

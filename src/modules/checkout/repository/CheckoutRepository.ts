@@ -12,12 +12,15 @@ export default class CheckoutRepository implements InterfaceCheckoutRepository {
         this.db.push(payment);
         return payment;
     }
+
     get(paymentId: string): Payment | undefined {
         return this.db.find((el) => el.getIdPayment() === paymentId);
     }
+
     getAll(): Payment[] {
         return this.db;
     }
+
     update(paymentId: string, updatePayment: Payment): Payment {
         let target = this.db.find((el) => el.getIdPayment() === paymentId);
         if (!target) throw new Error('Payment not found.');

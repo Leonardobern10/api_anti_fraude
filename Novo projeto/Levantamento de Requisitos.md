@@ -18,8 +18,6 @@ Ou seja:
 Não queremos dashboard para cliente se cadastrar manualmente.  
 Isso deve acontecer via API integrada ao nosso site.
 
-## Então existe uma condição para que o cliente realize um pedido que seria ele estar logado no sistema via API?
-
 
 ## Quem vai utilizar o sistema?
 Cliente: Depende da parte do sistema:

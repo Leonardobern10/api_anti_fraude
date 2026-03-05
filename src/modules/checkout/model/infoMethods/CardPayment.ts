@@ -18,6 +18,13 @@ export default class CardPayment implements InterfaceInfoMethod {
         return this.installments;
     }
 
+    public toJSON() {
+        return {
+            cardToken: this.cardToken,
+            installments: this.installments,
+        };
+    }
+
     pay(): Payment {
         throw new Error('Method not implemented.');
     }

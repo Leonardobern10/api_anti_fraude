@@ -11,4 +11,7 @@ export const PATH = {
     ORDER: {
         BASE: '/orders',
     },
+    CHECKOUT: {
+        BASE: '/checkout',
+    },
 };

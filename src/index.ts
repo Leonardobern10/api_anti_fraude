@@ -55,11 +55,9 @@ const orderRouter = new OrderRouter(orderController);
 
 // Module - CHECKOUT
 const checkoutRepository = new CheckoutRepository();
-const checkoutUserQuery = new UserQueryLocal(authRepository);
 const checkoutOrderQuery = new OrderQueryLocal(orderRepository);
 const checkoutService = new CheckoutService(
     checkoutRepository,
-    checkoutUserQuery,
     checkoutOrderQuery,
 );
 const checkoutController = new CheckoutController(checkoutService);
@@ -69,7 +67,7 @@ const checkoutRouter = new CheckoutRouter(checkoutController);
 const gateway = new ApiGateway(PATH.GATEWAY);
 gateway.addRoute(PATH.AUTH.BASE, authRouter.getRouter());
 gateway.addRoute(PATH.ORDER.BASE, orderRouter.getRouter());
-gateway.addRoute('/checkout', checkoutRouter.getRouter());
+gateway.addRoute(PATH.CHECKOUT.BASE, checkoutRouter.getRouter());
 
 // gateway.addRoute('/users', userRouter.getRouter());
 const exp: Application = express();
