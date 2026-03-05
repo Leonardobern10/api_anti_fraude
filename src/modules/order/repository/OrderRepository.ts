@@ -4,6 +4,7 @@ import { OrderStatus } from '../model/OrderStatus';
 import type { Repository } from 'typeorm';
 import type OrderDB from '../data-source.order';
 import type OrderHistory from '../model/entity/OrderHistory';
+import type { OrdersByUserResponse } from '../model/OrdersByUserResponse';
 
 export default class OrderRepository implements InterfaceOrderRepository {
     private orderDB: OrderDB;
@@ -39,6 +40,15 @@ export default class OrderRepository implements InterfaceOrderRepository {
             relations: { orderHistory: true },
         });
         return order;
+    }
+
+    async getByUser(userId: string): Promise<OrdersByUserResponse | null> {
+        const [orders, quantity]: [Order[], number] =
+            await this.repo.findAndCount({
+                where: { user: userId },
+                relations: { orderHistory: true },
+            });
+        return { orders, quantity };
     }
 
     async update(

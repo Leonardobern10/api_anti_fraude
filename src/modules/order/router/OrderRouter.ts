@@ -22,6 +22,7 @@ export default class OrderRouter {
     private regiterRoutes() {
         this.createOrder();
         this.getOrder();
+        this.getOrdersByUser;
         this.deleteOrder();
         this.updateOrder();
     }
@@ -82,6 +83,16 @@ export default class OrderRouter {
             AuthMiddleWare.checkAuthentication,
             async (req: Request, res: Response) => {
                 this.controller.getOrder(req, res);
+            },
+        );
+    }
+
+    public getOrdersByUser() {
+        this.router.get(
+            '/user',
+            AuthMiddleWare.checkAuthentication,
+            async (req: Request, res: Response) => {
+                this.controller.getOrdersByUser(req, res);
             },
         );
     }

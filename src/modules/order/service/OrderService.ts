@@ -5,6 +5,7 @@ import type InterfaceOrderRepository from '@modules/domain/order/InterfaceOrderR
 import type InterfaceOrderHistoryService from '@modules/domain/order/InterfaceOrderHistoryService';
 import Approver from '../model/Approver';
 import type Logger from '@logs/Logger';
+import type { OrdersByUserResponse } from '../model/OrdersByUserResponse';
 
 export default class OrderService implements InterfaceOrderService {
     private repository: InterfaceOrderRepository;
@@ -58,5 +59,9 @@ export default class OrderService implements InterfaceOrderService {
         Approver.approveAccess(order, user);
         this.logger.info(`Getting order ${orderId} with successfull`);
         return order!;
+    }
+
+    async getOrdersByUser(user: string): Promise<OrdersByUserResponse | null> {
+        return await this.repository.getByUser(user);
     }
 }

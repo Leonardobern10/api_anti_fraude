@@ -6,6 +6,7 @@ import BuildResponseError from '@utils/BuildResponseError';
 import { OrderSchema } from '../model/schema/OrderSchema';
 import HttpError from '@errors/HttpError';
 import { MSG } from '@utils/MessageResponse';
+import NotFoundError from '@errors/NotFoundError';
 
 export default class OrderController implements InterfaceOrderController {
     private service: InterfaceOrderService;
@@ -55,6 +56,17 @@ export default class OrderController implements InterfaceOrderController {
                 );
             const order = await this.service.getOrder(id, user);
             res.status(HttpStatus.OK).json({ order });
+        } catch (error) {
+            BuildResponseError.buildError(res, error);
+        }
+    }
+
+    async getOrdersByUser(req: Request, res: Response): Promise<void> {
+        try {
+            const { user } = (req as any).user.email;
+            const result = await this.service.getOrdersByUser(user);
+            if (!result) throw new NotFoundError('Orders not found.');
+            res.status(200).json({ result });
         } catch (error) {
             BuildResponseError.buildError(res, error);
         }
