@@ -5,8 +5,9 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
-import { OrderStatus } from '../OrderStatus';
-import Order from './Order';
+import type { Relation } from 'typeorm';
+import { OrderStatus } from '../OrderStatus.js';
+import Order from './Order.js';
 
 @Entity()
 export default class OrderHistory {
@@ -21,5 +22,5 @@ export default class OrderHistory {
     })
     currentStatus: OrderStatus = OrderStatus.PAYMENT_PENDING;
     @ManyToOne(() => Order, (order) => order.orderHistory)
-    order!: Order;
+    order!: Relation<Order>;
 }

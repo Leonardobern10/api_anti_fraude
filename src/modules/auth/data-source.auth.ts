@@ -1,6 +1,6 @@
 import { DataSource, Repository } from 'typeorm';
-import Client from './model/entity/Client';
-import type InterfaceModuleDB from '@modules/domain/ModuleDB';
+import Client from './model/entity/Client.js';
+import type InterfaceModuleDB from '@modules/domain/ModuleDB.js';
 
 export default class AuthDB implements InterfaceModuleDB {
     private datasource: DataSource;

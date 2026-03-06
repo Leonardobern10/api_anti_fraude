@@ -1,5 +1,5 @@
-import type OrderHistory from '@modules/order/model/entity/OrderHistory';
-import type { OrderStatus } from '@modules/order/model/OrderStatus';
+import type OrderHistory from '@modules/order/model/entity/OrderHistory.js';
+import type { OrderStatus } from '@modules/order/model/OrderStatus.js';
 
 export default class OrderDTO {
     public readonly id!: string;
@@ -17,7 +17,7 @@ export default class OrderDTO {
         createdAt: Date,
         updatedAt: Date,
         orderStatus: OrderStatus,
-        orderHistory: OrderHistory[]
+        orderHistory: OrderHistory[],
     ) {
         this.id = id;
         this.user = user;

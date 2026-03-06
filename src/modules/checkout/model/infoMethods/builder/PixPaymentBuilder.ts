@@ -1,6 +1,6 @@
-import type InterfaceInfoMethod from '@modules/domain/checkout/InterfaceInfoMethod';
-import type InterfaceInfoMethodBuilder from '@modules/domain/checkout/InterfaceInfoMethodBuilder';
-import PixPayment from '../PixPayment';
+import type InterfaceInfoMethod from '@modules/domain/checkout/InterfaceInfoMethod.js';
+import type InterfaceInfoMethodBuilder from '@modules/domain/checkout/InterfaceInfoMethodBuilder.js';
+import PixPayment from '../PixPayment.js';
 
 export default class PixPaymentBuilder implements InterfaceInfoMethodBuilder {
     private pixKey: string | null;

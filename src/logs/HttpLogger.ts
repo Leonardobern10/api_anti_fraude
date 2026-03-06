@@ -4,7 +4,7 @@ import type { RequestHandler } from 'express';
 
 export default class HttpLogger {
     public static buildHttpLogger(): RequestHandler {
-        return pinoHttp({
+        return pinoHttp.default({
             logger: pino({
                 transport: {
                     target: 'pino-pretty',

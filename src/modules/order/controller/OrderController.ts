@@ -1,12 +1,12 @@
-import type InterfaceOrderController from '@modules/domain/order/InterfaceOrderController';
 import type { Request, Response } from 'express';
-import { HttpStatus } from '@utils/HttpStatus.utils';
-import type InterfaceOrderService from '@modules/domain/order/InterfaceOrderService';
-import BuildResponseError from '@utils/BuildResponseError';
-import { OrderSchema } from '../model/schema/OrderSchema';
-import HttpError from '@errors/HttpError';
-import { MSG } from '@utils/MessageResponse';
-import NotFoundError from '@errors/NotFoundError';
+import type InterfaceOrderController from '@modules/domain/order/InterfaceOrderController.js';
+import { HttpStatus } from '@utils/HttpStatus.utils.js';
+import type InterfaceOrderService from '@modules/domain/order/InterfaceOrderService.js';
+import BuildResponseError from '@utils/BuildResponseError.js';
+import { OrderSchema } from '../model/schema/OrderSchema.js';
+import HttpError from '@errors/HttpError.js';
+import { MSG } from '@utils/MessageResponse.js';
+import NotFoundError from '@errors/NotFoundError.js';
 
 export default class OrderController implements InterfaceOrderController {
     private service: InterfaceOrderService;

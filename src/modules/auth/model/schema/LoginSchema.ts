@@ -1,5 +1,5 @@
 import z from 'zod';
-import { SchemaErrors } from './SchemaErrors';
+import { SchemaErrors } from './SchemaErrors.js';
 
 export const LoginSchema = z.object({
     email: z.email(),

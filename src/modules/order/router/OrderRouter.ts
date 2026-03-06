@@ -1,7 +1,7 @@
-import AuthMiddleWare from '@gateway/middlewares/AuthMiddleware';
-import type InterfaceOrderController from '@modules/domain/order/InterfaceOrderController';
-import type { Router, Request, Response } from 'express';
 import express from 'express';
+import type { Router, Request, Response } from 'express';
+import AuthMiddleWare from '@gateway/middlewares/AuthMiddleware.js';
+import type InterfaceOrderController from '@modules/domain/order/InterfaceOrderController.js';
 
 /**
  * @swagger

@@ -1,6 +1,6 @@
-import type Order from '@modules/order/model/entity/Order';
-import type OrderHistory from '@modules/order/model/entity/OrderHistory';
-import type { OrderStatus } from '@modules/order/model/OrderStatus';
+import type Order from '@modules/order/model/entity/Order.js';
+import type OrderHistory from '@modules/order/model/entity/OrderHistory.js';
+import type { OrderStatus } from '@modules/order/model/OrderStatus.js';
 
 export default interface InterfaceOrderHistoryRepository {
     save(

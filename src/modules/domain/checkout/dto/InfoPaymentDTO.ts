@@ -1,4 +1,4 @@
-import type { PaymentMethod } from '@modules/checkout/model/infoMethods/PaymentMethod';
+import type { PaymentMethod } from '@modules/checkout/model/infoMethods/PaymentMethod.js';
 
 export type InfoPaymentDTO = {
     currency: string;

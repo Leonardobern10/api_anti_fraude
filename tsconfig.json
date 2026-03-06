@@ -19,9 +19,9 @@
 
         // Environment Settings
         // See also https://aka.ms/tsconfig/module
-        "module": "es2022",
+        "module": "nodenext",
         "target": "es2022",
-        "moduleResolution": "bundler",
+        "moduleResolution": "nodenext",
         // For nodejs:
         "lib": ["esnext"],
         "types": ["node", "express", "jest"],

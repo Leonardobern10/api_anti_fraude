@@ -1,6 +1,6 @@
 import z from 'zod';
-import { CurrencySchema } from './CurrencySchema';
-import { PaymentMethod } from '../infoMethods/PaymentMethod';
+import { CurrencySchema } from './CurrencySchema.js';
+import { PaymentMethod } from '../infoMethods/PaymentMethod.js';
 
 export const CheckoutSchema = z.discriminatedUnion('paymentMethod', [
     CurrencySchema.extend({

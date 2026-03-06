@@ -1,6 +1,6 @@
-import type AuthRepository from '@modules/auth/repository/AuthRepository';
-import type { IUserQuery } from '@modules/domain/checkout/InterfaceUserQuery';
-import { UserDTO } from '../dto/UserDTO';
+import type AuthRepository from '@modules/auth/repository/AuthRepository.js';
+import type { IUserQuery } from '@modules/domain/checkout/InterfaceUserQuery.js';
+import { UserDTO } from '../dto/UserDTO.js';
 
 export default class UserQueryLocal implements IUserQuery {
     constructor(private authRepository: AuthRepository) {}

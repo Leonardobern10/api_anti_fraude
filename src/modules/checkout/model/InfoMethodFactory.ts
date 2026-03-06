@@ -1,8 +1,8 @@
-import type InterfaceInfoMethod from '@modules/domain/checkout/InterfaceInfoMethod';
-import CardPayment from './infoMethods/CardPayment';
-import { PaymentMethod } from './infoMethods/PaymentMethod';
-import PixPayment from './infoMethods/PixPayment';
-import TicketPayment from './infoMethods/TicketPayment';
+import type InterfaceInfoMethod from '@modules/domain/checkout/InterfaceInfoMethod.js';
+import CardPayment from './infoMethods/CardPayment.js';
+import { PaymentMethod } from './infoMethods/PaymentMethod.js';
+import PixPayment from './infoMethods/PixPayment.js';
+import TicketPayment from './infoMethods/TicketPayment.js';
 
 export default class InfoMethodFactory {
     static create(info: any): InterfaceInfoMethod {

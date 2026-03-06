@@ -1,5 +1,5 @@
-import AuthMiddleWare from '@gateway/middlewares/AuthMiddleware';
-import type InterfaceCheckoutController from '@modules/domain/checkout/InterfaceCheckoutController';
+import AuthMiddleWare from '@gateway/middlewares/AuthMiddleware.js';
+import type InterfaceCheckoutController from '@modules/domain/checkout/InterfaceCheckoutController.js';
 import express from 'express';
 import type { Request, Response, Router } from 'express';
 

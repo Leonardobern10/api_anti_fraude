@@ -1,4 +1,4 @@
-import type Payment from '@modules/checkout/model/Payment';
+import type Payment from '@modules/checkout/model/Payment.js';
 
 export default interface InterfaceCheckoutRepository {
     save(payment: Payment): Payment;

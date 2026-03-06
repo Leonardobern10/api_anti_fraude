@@ -1,5 +1,5 @@
 import pino, { type Logger as PinoLogger } from 'pino';
-import type LoggerInterface from '../modules/domain/LoggerInterface';
+import type LoggerInterface from '../modules/domain/LoggerInterface.js';
 
 export default class Logger implements LoggerInterface {
     private logger: PinoLogger;

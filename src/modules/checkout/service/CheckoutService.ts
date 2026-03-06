@@ -1,9 +1,9 @@
-import Payment from '../model/Payment';
-import type CheckoutDTO from '@modules/domain/checkout/dto/CheckoutDTO';
-import type InterfaceCheckoutRepository from '@modules/domain/checkout/InterfaceCheckoutRepository';
-import type InterfaceCheckoutService from '@modules/domain/checkout/InterfaceCheckoutService';
-import type OrderDTO from '@modules/domain/order/dto/OrderDTO';
-import type { IOrderQuery } from '@modules/domain/checkout/InterfaceOrderQuery';
+import Payment from '../model/Payment.js';
+import type CheckoutDTO from '@modules/domain/checkout/dto/CheckoutDTO.js';
+import type InterfaceCheckoutRepository from '@modules/domain/checkout/InterfaceCheckoutRepository.js';
+import type InterfaceCheckoutService from '@modules/domain/checkout/InterfaceCheckoutService.js';
+import type OrderDTO from '@modules/domain/order/dto/OrderDTO.js';
+import type { IOrderQuery } from '@modules/domain/checkout/InterfaceOrderQuery.js';
 
 export default class CheckoutService implements InterfaceCheckoutService {
     private repository: InterfaceCheckoutRepository;

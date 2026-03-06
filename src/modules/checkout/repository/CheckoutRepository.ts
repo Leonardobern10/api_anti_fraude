@@ -1,5 +1,5 @@
-import type InterfaceCheckoutRepository from '@modules/domain/checkout/InterfaceCheckoutRepository';
-import type Payment from '../model/Payment';
+import type InterfaceCheckoutRepository from '@modules/domain/checkout/InterfaceCheckoutRepository.js';
+import type Payment from '../model/Payment.js';
 
 export default class CheckoutRepository implements InterfaceCheckoutRepository {
     private db: Payment[];

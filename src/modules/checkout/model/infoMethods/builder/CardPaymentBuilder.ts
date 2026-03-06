@@ -1,6 +1,6 @@
-import type InterfaceInfoMethod from '@modules/domain/checkout/InterfaceInfoMethod';
-import type InterfaceInfoMethodBuilder from '@modules/domain/checkout/InterfaceInfoMethodBuilder';
-import CardPayment from '../CardPayment';
+import type InterfaceInfoMethod from '@modules/domain/checkout/InterfaceInfoMethod.js';
+import type InterfaceInfoMethodBuilder from '@modules/domain/checkout/InterfaceInfoMethodBuilder.js';
+import CardPayment from '../CardPayment.js';
 
 export default class CardPaymentBuilder implements InterfaceInfoMethodBuilder {
     private cardToken: string | null;

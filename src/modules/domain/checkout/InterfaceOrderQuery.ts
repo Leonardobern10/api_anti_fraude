@@ -1,4 +1,4 @@
-import type OrderDTO from '../order/dto/OrderDTO';
+import type OrderDTO from '../order/dto/OrderDTO.js';
 
 // payment/domain/ports/OrderQuery.ts
 export interface IOrderQuery {

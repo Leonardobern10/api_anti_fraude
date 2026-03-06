@@ -1,12 +1,12 @@
-import type Logger from '@logs/Logger';
-import Crypt from '@utils/Crypt';
-import JwtUtils from '@utils/JWT.utils';
-import type InterfaceAuthService from '../../domain/auth/InterfaceAuthService';
-import Client from '../model/entity/Client';
-import type AuthRepository from '../repository/AuthRepository';
-import { MSG } from '@utils/MessageResponse';
-import NotFoundError from '@errors/NotFoundError';
-import BadRequestError from '@errors/BadRequestError';
+import type Logger from '@logs/Logger.js';
+import Crypt from '@utils/Crypt.js';
+import JwtUtils from '@utils/JWT.utils.js';
+import type InterfaceAuthService from '../../domain/auth/InterfaceAuthService.js';
+import Client from '../model/entity/Client.js';
+import type AuthRepository from '../repository/AuthRepository.js';
+import { MSG } from '@utils/MessageResponse.js';
+import NotFoundError from '@errors/NotFoundError.js';
+import BadRequestError from '@errors/BadRequestError.js';
 import type { JwtPayload } from 'jsonwebtoken';
 
 export default class AuthService implements InterfaceAuthService {

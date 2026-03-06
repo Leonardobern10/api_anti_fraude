@@ -1,7 +1,7 @@
 import type { Response } from 'express';
 import { ZodError } from 'zod';
-import { HttpStatus } from './HttpStatus.utils';
-import BaseError from '@errors/BaseError';
+import { HttpStatus } from './HttpStatus.utils.js';
+import BaseError from '@errors/BaseError.js';
 
 export default class BuildResponseError {
     static buildError(res: Response, error: unknown): Response {

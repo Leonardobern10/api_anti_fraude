@@ -1,7 +1,6 @@
-import type { IOrderQuery } from '@modules/domain/checkout/InterfaceOrderQuery';
-import type OrderRepository from '@modules/order/repository/OrderRepository';
-import type InterfaceOrderRepository from '../InterfaceOrderRepository';
-import OrderDTO from '../dto/OrderDTO';
+import type { IOrderQuery } from '@modules/domain/checkout/InterfaceOrderQuery.js';
+import type InterfaceOrderRepository from '../InterfaceOrderRepository.js';
+import OrderDTO from '../dto/OrderDTO.js';
 
 export default class OrderQueryLocal implements IOrderQuery {
     private orderRepository: InterfaceOrderRepository;

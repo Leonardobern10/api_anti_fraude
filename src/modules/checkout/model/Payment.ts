@@ -1,5 +1,5 @@
-import type InterfaceInfoMethod from '@modules/domain/checkout/InterfaceInfoMethod';
-import type { PaymentMethod } from './infoMethods/PaymentMethod';
+import type InterfaceInfoMethod from '@modules/domain/checkout/InterfaceInfoMethod.js';
+import type { PaymentMethod } from './infoMethods/PaymentMethod.js';
 
 export default class Payment {
     private idPayment: string;

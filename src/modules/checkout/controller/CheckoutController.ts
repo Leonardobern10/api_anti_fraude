@@ -1,12 +1,12 @@
-import type InterfaceCheckoutController from '@modules/domain/checkout/InterfaceCheckoutController';
 import type { Request, Response } from 'express';
-import type InterfaceCheckoutService from '@modules/domain/checkout/InterfaceCheckoutService';
-import CheckoutDTO from '@modules/domain/checkout/dto/CheckoutDTO';
-import { HttpStatus } from '@utils/HttpStatus.utils';
-import BuildResponseError from '@utils/BuildResponseError';
-import { CheckoutSchema } from '../model/schema/CheckoutSchema';
-import BadRequestError from '@errors/BadRequestError';
-import InfoMethodFactory from '../model/InfoMethodFactory';
+import type InterfaceCheckoutController from '@modules/domain/checkout/InterfaceCheckoutController.js';
+import type InterfaceCheckoutService from '@modules/domain/checkout/InterfaceCheckoutService.js';
+import CheckoutDTO from '@modules/domain/checkout/dto/CheckoutDTO.js';
+import { HttpStatus } from '@utils/HttpStatus.utils.js';
+import BuildResponseError from '@utils/BuildResponseError.js';
+import { CheckoutSchema } from '../model/schema/CheckoutSchema.js';
+import BadRequestError from '@errors/BadRequestError.js';
+import InfoMethodFactory from '../model/InfoMethodFactory.js';
 
 export default class CheckoutController implements InterfaceCheckoutController {
     private service: InterfaceCheckoutService;

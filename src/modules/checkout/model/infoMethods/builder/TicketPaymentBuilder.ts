@@ -1,6 +1,6 @@
-import type InterfaceInfoMethod from '@modules/domain/checkout/InterfaceInfoMethod';
-import type InterfaceInfoMethodBuilder from '@modules/domain/checkout/InterfaceInfoMethodBuilder';
-import TicketPayment from '../TicketPayment';
+import type InterfaceInfoMethod from '@modules/domain/checkout/InterfaceInfoMethod.js';
+import type InterfaceInfoMethodBuilder from '@modules/domain/checkout/InterfaceInfoMethodBuilder.js';
+import TicketPayment from '../TicketPayment.js';
 
 export default class TicketPaymentBuilder implements InterfaceInfoMethodBuilder {
     private dueDate: Date | null;

@@ -1,5 +1,5 @@
-import type Server from '../server/Server';
-import type ApiGateway from '../gateway/Gateway.router';
+import type Server from '../server/Server.js';
+import type ApiGateway from '../gateway/Gateway.router.js';
 
 export default class App {
     private port: string | number;

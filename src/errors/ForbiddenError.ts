@@ -1,5 +1,5 @@
-import { HttpStatus } from '@utils/HttpStatus.utils';
-import BaseError from './BaseError';
+import { HttpStatus } from '@utils/HttpStatus.utils.js';
+import BaseError from './BaseError.js';
 
 export default class ForbiddenError extends BaseError {
     constructor(msg: string) {

@@ -1,5 +1,5 @@
-import type { PaymentMethod } from '@modules/checkout/model/infoMethods/PaymentMethod';
-import type InterfaceInfoMethod from '../InterfaceInfoMethod';
+import type { PaymentMethod } from '@modules/checkout/model/infoMethods/PaymentMethod.js';
+import type InterfaceInfoMethod from '../InterfaceInfoMethod.js';
 
 export default class CheckoutDTO {
     public readonly orderId: string;

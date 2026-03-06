@@ -1,6 +1,6 @@
-import type Order from '@modules/order/model/entity/Order';
-import type { OrdersByUserResponse } from '@modules/order/model/OrdersByUserResponse';
-import type { OrderStatus } from '@modules/order/model/OrderStatus';
+import type Order from '@modules/order/model/entity/Order.js';
+import type { OrdersByUserResponse } from '@modules/order/model/OrdersByUserResponse.js';
+import type { OrderStatus } from '@modules/order/model/OrderStatus.js';
 
 export default interface InterfaceOrderService {
     createOrder(email: string, value: number): Promise<Order>;

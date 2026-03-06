@@ -1,7 +1,7 @@
 import { DataSource, Repository } from 'typeorm';
-import Order from './model/entity/Order';
-import type InterfaceModuleDB from '@modules/domain/ModuleDB';
-import OrderHistory from './model/entity/OrderHistory';
+import Order from './model/entity/Order.js';
+import type InterfaceModuleDB from '@modules/domain/ModuleDB.js';
+import OrderHistory from './model/entity/OrderHistory.js';
 
 export default class OrderDB implements InterfaceModuleDB {
     private datasource: DataSource;

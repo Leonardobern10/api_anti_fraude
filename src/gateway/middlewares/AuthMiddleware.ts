@@ -1,8 +1,8 @@
 import type { NextFunction, Request, Response } from 'express';
-import JwtUtils from '@utils/JWT.utils';
-import { MSG } from '@utils/MessageResponse';
-import BadRequestError from '@errors/BadRequestError';
-import BuildResponseError from '@utils/BuildResponseError';
+import JwtUtils from '@utils/JWT.utils.js';
+import { MSG } from '@utils/MessageResponse.js';
+import BadRequestError from '@errors/BadRequestError.js';
+import BuildResponseError from '@utils/BuildResponseError.js';
 
 export default class AuthMiddleWare {
     static checkAuthentication(

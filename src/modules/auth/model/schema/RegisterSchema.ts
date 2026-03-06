@@ -1,5 +1,5 @@
 import z from 'zod';
-import { SchemaErrors } from './SchemaErrors';
+import { SchemaErrors } from './SchemaErrors.js';
 
 export const RegisterSchema = z.object({
     name: z.string(SchemaErrors.NAME.STRING).min(2, SchemaErrors.NAME.LENGTH),

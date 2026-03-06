@@ -1,11 +1,11 @@
-import type InterfaceOrderService from '@modules/domain/order/InterfaceOrderService';
-import Order from '../model/entity/Order';
-import { OrderStatus } from '../model/OrderStatus';
-import type InterfaceOrderRepository from '@modules/domain/order/InterfaceOrderRepository';
-import type InterfaceOrderHistoryService from '@modules/domain/order/InterfaceOrderHistoryService';
-import Approver from '../model/Approver';
-import type Logger from '@logs/Logger';
-import type { OrdersByUserResponse } from '../model/OrdersByUserResponse';
+import type InterfaceOrderService from '@modules/domain/order/InterfaceOrderService.js';
+import Order from '../model/entity/Order.js';
+import { OrderStatus } from '../model/OrderStatus.js';
+import type InterfaceOrderRepository from '@modules/domain/order/InterfaceOrderRepository.js';
+import type InterfaceOrderHistoryService from '@modules/domain/order/InterfaceOrderHistoryService.js';
+import Approver from '../model/Approver.js';
+import type Logger from '@logs/Logger.js';
+import type { OrdersByUserResponse } from '../model/OrdersByUserResponse.js';
 
 export default class OrderService implements InterfaceOrderService {
     private repository: InterfaceOrderRepository;
