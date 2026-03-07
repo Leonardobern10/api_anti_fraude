@@ -3,7 +3,7 @@ import type OrderDB from '../data-source.order.js';
 import type Order from '../model/entity/Order.js';
 import type OrderHistory from '../model/entity/OrderHistory.js';
 import type InterfaceOrderHistoryRepository from '@modules/domain/order/InterfaceOrderHistoryRepository.js';
-import { OrderStatus } from '../model/OrderStatus.js';
+import { OrderStatus } from '../../domain/order/OrderStatus.js';
 
 export default class OrderHistoryRepository implements InterfaceOrderHistoryRepository {
     private orderDB: OrderDB;

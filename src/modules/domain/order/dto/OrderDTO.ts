@@ -1,5 +1,5 @@
 import type OrderHistory from '@modules/order/model/entity/OrderHistory.js';
-import type { OrderStatus } from '@modules/order/model/OrderStatus.js';
+import type { OrderStatus } from '@modules/domain/order/OrderStatus.js';
 
 export default class OrderDTO {
     public readonly id!: string;

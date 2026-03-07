@@ -6,7 +6,7 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
-import { OrderStatus } from '../OrderStatus.js';
+import { OrderStatus } from '../../../domain/order/OrderStatus.js';
 import OrderHistory from './OrderHistory.js';
 
 @Entity()

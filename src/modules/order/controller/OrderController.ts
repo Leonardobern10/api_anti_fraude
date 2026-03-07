@@ -158,9 +158,33 @@ export default class OrderController implements InterfaceOrderController {
     }
 
     //  Será atualizado pelo Payment
-    async updateOrder(req: Request, res: Response): Promise<void> {}
+    async updateOrder(req: Request, res: Response): Promise<void> {
+        try {
+            const { id } = req.params;
+            const { newStatus } = req.body;
+            const user = this.getUser(req);
+
+            const checkedId: string = this.checkId(id);
+            await this.service.updateStatus(checkedId, user, newStatus);
+        } catch (error) {
+            BuildResponseError.buildError(res, error);
+        }
+    }
+
+    async updateOrderByPayment(req: Request, res: Response) {
+        this.updateOrder(req, res);
+    }
 
     private getUser(req: Request): string {
         return (req as any).user.email;
+    }
+
+    private checkId(id: any): string {
+        if (!id || typeof id !== 'string')
+            throw new HttpError(
+                MSG.ORDER.ERROR.INVALID_ID,
+                HttpStatus.BAD_REQUEST,
+            );
+        return id;
     }
 }

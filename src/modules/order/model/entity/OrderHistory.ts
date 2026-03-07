@@ -6,7 +6,7 @@ import {
     UpdateDateColumn,
 } from 'typeorm';
 import type { Relation } from 'typeorm';
-import { OrderStatus } from '../OrderStatus.js';
+import { OrderStatus } from '../../../domain/order/OrderStatus.js';
 import Order from './Order.js';
 
 @Entity()

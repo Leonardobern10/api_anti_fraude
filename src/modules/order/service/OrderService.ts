@@ -1,6 +1,6 @@
 import type InterfaceOrderService from '@modules/domain/order/InterfaceOrderService.js';
 import Order from '../model/entity/Order.js';
-import { OrderStatus } from '../model/OrderStatus.js';
+import { OrderStatus } from '../../domain/order/OrderStatus.js';
 import type InterfaceOrderRepository from '@modules/domain/order/InterfaceOrderRepository.js';
 import type InterfaceOrderHistoryService from '@modules/domain/order/InterfaceOrderHistoryService.js';
 import Approver from '../model/Approver.js';
@@ -43,7 +43,7 @@ export default class OrderService implements InterfaceOrderService {
             newStatus,
             history,
         );
-        this.logger.info(`Update order ${order!.id} with successful.`);
+        this.logger.info(`Updated order ${order!.id} with successful.`);
         return updatedOrder;
     }
 
