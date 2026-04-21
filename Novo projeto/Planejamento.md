@@ -18,3 +18,13 @@ Ainda falta:
 - Logica de autorização
 - Separação de privilégios
 
+### Entrega 2
+- Criação de pedidos
+- Alteração de seu status e cancelamento
+- Apenas o proprietario do pedido pode visualizar e alterar
+- Apenas usuário autenticado pode manipular o pedido
+- ORM com TypeORM
+- Armazenados em PostgreSQL
+- Logs
+- Documentação com Swagger
+- Variáveis de ambiente

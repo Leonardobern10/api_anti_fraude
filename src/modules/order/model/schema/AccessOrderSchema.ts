@@ -1,4 +1,4 @@
-import { UserDTO } from '@modules/domain/auth/dto/UserDTO';
+import { UserDTO } from '@modules/domain/auth/dto/UserDTO.js';
 import z from 'zod';
 
 export const AccessOrderSchema = z.object({

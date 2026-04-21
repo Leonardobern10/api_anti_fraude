@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import type ApiGatewayInterface from '../modules/domain/ApiGatewayInterface';
+import type ApiGatewayInterface from '../modules/domain/ApiGatewayInterface.js';
 
 export default class ApiGateway implements ApiGatewayInterface {
     private path: string;

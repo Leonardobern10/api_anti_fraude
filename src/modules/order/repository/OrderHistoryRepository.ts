@@ -1,9 +1,9 @@
 import type { Repository } from 'typeorm';
-import type OrderDB from '../data-source.order';
-import type Order from '../model/entity/Order';
-import type OrderHistory from '../model/entity/OrderHistory';
-import type InterfaceOrderHistoryRepository from '@modules/domain/order/InterfaceOrderHistoryRepository';
-import { OrderStatus } from '../model/OrderStatus';
+import type OrderDB from '../data-source.order.js';
+import type Order from '../model/entity/Order.js';
+import type OrderHistory from '../model/entity/OrderHistory.js';
+import type InterfaceOrderHistoryRepository from '@modules/domain/order/InterfaceOrderHistoryRepository.js';
+import { OrderStatus } from '../../domain/order/OrderStatus.js';
 
 export default class OrderHistoryRepository implements InterfaceOrderHistoryRepository {
     private orderDB: OrderDB;

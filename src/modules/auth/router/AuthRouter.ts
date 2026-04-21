@@ -1,8 +1,8 @@
 import type { Router, Request, Response } from 'express';
 import express from 'express';
-import type AuthController from '../controller/AuthController';
-import AuthMiddleWare from '../../../gateway/middlewares/AuthMiddleware';
-import { PATH } from '@utils/Path';
+import type AuthController from '../controller/AuthController.js';
+import AuthMiddleWare from '../../../gateway/middlewares/AuthMiddleware.js';
+import { PATH } from '@utils/Path.js';
 
 /**
  * @swagger

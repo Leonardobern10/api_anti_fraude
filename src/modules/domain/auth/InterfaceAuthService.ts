@@ -1,4 +1,4 @@
-import type Client from '../../auth/model/entity/Client';
+import type Client from '../../auth/model/entity/Client.js';
 
 export default interface InterfaceAuthService {
     register(name: string, email: string, password: string): Promise<Client>;

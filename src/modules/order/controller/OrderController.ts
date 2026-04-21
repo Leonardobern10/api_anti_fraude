@@ -1,11 +1,12 @@
-import type InterfaceOrderController from '@modules/domain/order/InterfaceOrderController';
 import type { Request, Response } from 'express';
-import { HttpStatus } from '@utils/HttpStatus.utils';
-import type InterfaceOrderService from '@modules/domain/order/InterfaceOrderService';
-import BuildResponseError from '@utils/BuildResponseError';
-import { OrderSchema } from '../model/schema/OrderSchema';
-import HttpError from '@errors/HttpError';
-import { MSG } from '@utils/MessageResponse';
+import type InterfaceOrderController from '@modules/domain/order/InterfaceOrderController.js';
+import { HttpStatus } from '@utils/HttpStatus.utils.js';
+import type InterfaceOrderService from '@modules/domain/order/InterfaceOrderService.js';
+import BuildResponseError from '@utils/BuildResponseError.js';
+import { OrderSchema } from '../model/schema/OrderSchema.js';
+import HttpError from '@errors/HttpError.js';
+import { MSG } from '@utils/MessageResponse.js';
+import NotFoundError from '@errors/NotFoundError.js';
 
 export default class OrderController implements InterfaceOrderController {
     private service: InterfaceOrderService;
@@ -55,6 +56,17 @@ export default class OrderController implements InterfaceOrderController {
                 );
             const order = await this.service.getOrder(id, user);
             res.status(HttpStatus.OK).json({ order });
+        } catch (error) {
+            BuildResponseError.buildError(res, error);
+        }
+    }
+
+    async getOrdersByUser(req: Request, res: Response): Promise<void> {
+        try {
+            const { user } = (req as any).user.email;
+            const result = await this.service.getOrdersByUser(user);
+            if (!result) throw new NotFoundError('Orders not found.');
+            res.status(200).json({ result });
         } catch (error) {
             BuildResponseError.buildError(res, error);
         }
@@ -146,9 +158,33 @@ export default class OrderController implements InterfaceOrderController {
     }
 
     //  Será atualizado pelo Payment
-    async updateOrder(req: Request, res: Response): Promise<void> {}
+    async updateOrder(req: Request, res: Response): Promise<void> {
+        try {
+            const { id } = req.params;
+            const { newStatus } = req.body;
+            const user = this.getUser(req);
+
+            const checkedId: string = this.checkId(id);
+            await this.service.updateStatus(checkedId, user, newStatus);
+        } catch (error) {
+            BuildResponseError.buildError(res, error);
+        }
+    }
+
+    async updateOrderByPayment(req: Request, res: Response) {
+        this.updateOrder(req, res);
+    }
 
     private getUser(req: Request): string {
         return (req as any).user.email;
+    }
+
+    private checkId(id: any): string {
+        if (!id || typeof id !== 'string')
+            throw new HttpError(
+                MSG.ORDER.ERROR.INVALID_ID,
+                HttpStatus.BAD_REQUEST,
+            );
+        return id;
     }
 }

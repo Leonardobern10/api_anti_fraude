@@ -1,16 +1,15 @@
 import type { Request, Response } from 'express';
-import type AuthService from '../service/AuthService.auth';
-import type InterfaceAuthController from '../../domain/auth/InterfaceAuthController';
-import { HttpStatus } from '../../../utils/HttpStatus.utils';
-import { RegisterSchema } from '../model/schema/RegisterSchema';
-import BuildResponseError from '../../../utils/BuildResponseError';
-import Client from '../model/entity/Client';
-import Crypt from '../../../utils/Crypt';
-import { MSG } from '@utils/MessageResponse';
-import HttpError from '@errors/HttpError';
-import { LoginSchema } from '../model/schema/LoginSchema';
-import UnauthorizedError from '@errors/UnauthorizedError';
-import NotFoundError from '@errors/NotFoundError';
+import type AuthService from '../service/AuthService.auth.js';
+import type InterfaceAuthController from '../../domain/auth/InterfaceAuthController.js';
+import { HttpStatus } from '../../../utils/HttpStatus.utils.js';
+import { RegisterSchema } from '../model/schema/RegisterSchema.js';
+import BuildResponseError from '../../../utils/BuildResponseError.js';
+import Client from '../model/entity/Client.js';
+import Crypt from '../../../utils/Crypt.js';
+import { MSG } from '@utils/MessageResponse.js';
+import { LoginSchema } from '../model/schema/LoginSchema.js';
+import UnauthorizedError from '@errors/UnauthorizedError.js';
+import NotFoundError from '@errors/NotFoundError.js';
 
 export default class AuthController implements InterfaceAuthController {
     private service: AuthService;

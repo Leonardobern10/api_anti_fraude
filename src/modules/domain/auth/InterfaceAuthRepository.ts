@@ -1,4 +1,4 @@
-import type Client from '@modules/auth/model/entity/Client';
+import type Client from '@modules/auth/model/entity/Client.js';
 
 export default interface InterfaceAuthRepository {
     test(): string;

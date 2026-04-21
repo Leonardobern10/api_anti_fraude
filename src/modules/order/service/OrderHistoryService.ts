@@ -1,7 +1,7 @@
-import type InterfaceOrderHistoryService from '@modules/domain/order/InterfaceOrderHistoryService';
-import type Order from '../model/entity/Order';
-import type OrderHistoryRepository from '../repository/OrderHistoryRepository';
-import type OrderHistory from '../model/entity/OrderHistory';
+import type InterfaceOrderHistoryService from '@modules/domain/order/InterfaceOrderHistoryService.js';
+import type Order from '../model/entity/Order.js';
+import type OrderHistoryRepository from '../repository/OrderHistoryRepository.js';
+import type OrderHistory from '../model/entity/OrderHistory.js';
 
 export default class OrderHistoryService implements InterfaceOrderHistoryService {
     private repository: OrderHistoryRepository;

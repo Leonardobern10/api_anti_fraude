@@ -1,6 +1,6 @@
 import type { Repository } from 'typeorm';
-import type Client from '../model/entity/Client';
-import AuthDB from '../data-source.auth';
+import type Client from '../model/entity/Client.js';
+import AuthDB from '../data-source.auth.js';
 
 export default class AuthRepository {
     private authDB: AuthDB;

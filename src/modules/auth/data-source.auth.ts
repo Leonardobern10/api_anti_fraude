@@ -1,6 +1,6 @@
 import { DataSource, Repository } from 'typeorm';
-import Client from './model/entity/Client';
-import type InterfaceModuleDB from '@modules/domain/ModuleDB';
+import Client from './model/entity/Client.js';
+import type InterfaceModuleDB from '@modules/domain/ModuleDB.js';
 
 export default class AuthDB implements InterfaceModuleDB {
     private datasource: DataSource;
@@ -8,11 +8,11 @@ export default class AuthDB implements InterfaceModuleDB {
     constructor() {
         this.datasource = new DataSource({
             type: 'postgres',
-            host: 'localhost',
-            port: 5432,
-            username: 'postgres',
-            password: '1234',
-            database: 'app_anti_fraude',
+            host: process.env.DB_HOST || 'localhost',
+            port: Number(process.env.DB_PORT) || 5432,
+            username: process.env.DB_USERNAME!,
+            password: process.env.DB_PASSWORD!,
+            database: process.env.DB_AUTH_NAME!,
             synchronize: true,
             logging: true,
             entities: [Client],

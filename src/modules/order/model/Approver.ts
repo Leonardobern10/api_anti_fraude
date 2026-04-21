@@ -1,7 +1,7 @@
-import { MSG } from '@utils/MessageResponse';
-import type Order from './entity/Order';
-import { HttpStatus } from '@utils/HttpStatus.utils';
-import { OrderStatus } from './OrderStatus';
+import { MSG } from '@utils/MessageResponse.js';
+import type Order from './entity/Order.js';
+import { HttpStatus } from '@utils/HttpStatus.utils.js';
+import { OrderStatus } from '../../domain/order/OrderStatus.js';
 
 export default class Approver {
     private static approveExistence(

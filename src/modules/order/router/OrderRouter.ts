@@ -1,7 +1,7 @@
-import AuthMiddleWare from '@gateway/middlewares/AuthMiddleware';
-import type InterfaceOrderController from '@modules/domain/order/InterfaceOrderController';
-import type { Router, Request, Response } from 'express';
 import express from 'express';
+import type { Router, Request, Response } from 'express';
+import AuthMiddleWare from '@gateway/middlewares/AuthMiddleware.js';
+import type InterfaceOrderController from '@modules/domain/order/InterfaceOrderController.js';
 
 /**
  * @swagger
@@ -22,6 +22,7 @@ export default class OrderRouter {
     private regiterRoutes() {
         this.createOrder();
         this.getOrder();
+        this.getOrdersByUser;
         this.deleteOrder();
         this.updateOrder();
     }
@@ -82,6 +83,16 @@ export default class OrderRouter {
             AuthMiddleWare.checkAuthentication,
             async (req: Request, res: Response) => {
                 this.controller.getOrder(req, res);
+            },
+        );
+    }
+
+    public getOrdersByUser() {
+        this.router.get(
+            '/user',
+            AuthMiddleWare.checkAuthentication,
+            async (req: Request, res: Response) => {
+                this.controller.getOrdersByUser(req, res);
             },
         );
     }

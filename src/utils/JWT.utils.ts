@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import type Client from '../modules/auth/model/entity/Client';
+import type Client from '../modules/auth/model/entity/Client.js';
 
 const SECRET = 'super_secret_key';
 

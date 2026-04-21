@@ -1,10 +1,10 @@
 import type { Application, Request, Response, Router } from 'express';
 import express from 'express';
-import HttpLogger from '../logs/HttpLogger';
-import type ServerInterface from '../modules/domain/ServerInterface';
+import HttpLogger from '../logs/HttpLogger.js';
+import type ServerInterface from '../modules/domain/ServerInterface.js';
 import cookieParser from 'cookie-parser';
 import swaggerUi from 'swagger-ui-express'; // <-- FALTAVA
-import { swaggerSpec } from '../docs/swagger.config';
+import { swaggerSpec } from '../docs/swagger.config.js';
 
 export default class Server implements ServerInterface {
     private server: Application;

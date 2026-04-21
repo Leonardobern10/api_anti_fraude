@@ -1,10 +1,12 @@
-import type InterfaceOrderRepository from '@modules/domain/order/InterfaceOrderRepository';
-import Order from '../model/entity/Order';
-import { OrderStatus } from '../model/OrderStatus';
 import type { Repository } from 'typeorm';
-import type OrderDB from '../data-source.order';
-import type OrderHistory from '../model/entity/OrderHistory';
-import Approver from '../model/Approver';
+import type InterfaceOrderRepository from '@modules/domain/order/InterfaceOrderRepository.js';
+import Order from '../model/entity/Order.js';
+import { OrderStatus } from '../../domain/order/OrderStatus.js';
+import type OrderDB from '../data-source.order.js';
+import type OrderHistory from '../model/entity/OrderHistory.js';
+import type { OrdersByUserResponse } from '../model/OrdersByUserResponse.js';
+import NotFoundError from '@errors/NotFoundError.js';
+import { MSG } from '@utils/MessageResponse.js';
 
 export default class OrderRepository implements InterfaceOrderRepository {
     private orderDB: OrderDB;
@@ -42,6 +44,15 @@ export default class OrderRepository implements InterfaceOrderRepository {
         return order;
     }
 
+    async getByUser(userId: string): Promise<OrdersByUserResponse | null> {
+        const [orders, quantity]: [Order[], number] =
+            await this.repo.findAndCount({
+                where: { user: userId },
+                relations: { orderHistory: true },
+            });
+        return { orders, quantity };
+    }
+
     async update(
         id: string,
         newStatus: OrderStatus,
@@ -51,8 +62,15 @@ export default class OrderRepository implements InterfaceOrderRepository {
             where: { id: id },
             relations: { orderHistory: true },
         });
-        order!.orderHistory.push(statusPast);
-        order!.orderStatus = newStatus;
-        return await this.repo.save(order!);
+        if (!order) throw new NotFoundError(MSG.ORDER.ERROR.NOT_FOUND);
+
+        const updateOrder = await this.repo.update(
+            { id: order.id },
+            {
+                orderHistory: [...order.orderHistory, statusPast],
+                orderStatus: newStatus,
+            },
+        );
+        return updateOrder.raw;
     }
 }
