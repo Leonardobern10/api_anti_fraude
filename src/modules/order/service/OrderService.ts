@@ -6,20 +6,24 @@ import type InterfaceOrderHistoryService from '@modules/domain/order/InterfaceOr
 import Approver from '../model/Approver.js';
 import type Logger from '@logs/Logger.js';
 import type { OrdersByUserResponse } from '../model/OrdersByUserResponse.js';
+import type Messaging from 'messaging/Messaging.js';
 
 export default class OrderService implements InterfaceOrderService {
     private repository: InterfaceOrderRepository;
     private orderHistoryService: InterfaceOrderHistoryService;
     private logger: Logger;
+    private messaging: Messaging;
 
     constructor(
         repository: InterfaceOrderRepository,
         orderHistoryService: InterfaceOrderHistoryService,
         logger: Logger,
+        messaging: Messaging, // <-- novo
     ) {
         this.repository = repository;
         this.orderHistoryService = orderHistoryService;
         this.logger = logger;
+        this.messaging = messaging;
     }
 
     async createOrder(email: string, value: number): Promise<Order> {
@@ -35,14 +39,11 @@ export default class OrderService implements InterfaceOrderService {
         this.logger.info(`Update order by: ${user}`);
         const order = await this.repository.get(orderId);
         Approver.approveUpdate(order, user);
-        const history = await this.orderHistoryService.createOrderHistory(
-            order!,
-        );
-        const updatedOrder = await this.repository.update(
-            order!.id,
-            newStatus,
-            history,
-        );
+
+        await this.orderHistoryService.createOrderHistory(order!);
+
+        const updatedOrder = await this.repository.update(order!.id, newStatus);
+
         this.logger.info(`Updated order ${order!.id} with successful.`);
         return updatedOrder;
     }
@@ -63,5 +64,47 @@ export default class OrderService implements InterfaceOrderService {
 
     async getOrdersByUser(user: string): Promise<OrdersByUserResponse | null> {
         return await this.repository.getByUser(user);
+    }
+
+    public async listenPaymentEvents(): Promise<void> {
+        await this.messaging.consume(
+            'app.events',
+            'payment.created',
+            async (raw) => {
+                const { paymentId, orderId, userId } = JSON.parse(raw);
+                this.logger.info(
+                    `Evento payment.created recebido para order ${orderId} | Author: ${userId}`,
+                );
+
+                try {
+                    await this.updateStatus(
+                        orderId,
+                        userId,
+                        OrderStatus.APPROVED,
+                    );
+
+                    await this.messaging.publish(
+                        'app.events',
+                        `order.updated.${orderId}`,
+                        JSON.stringify({ success: true, orderId, paymentId }),
+                    );
+                } catch (error: any) {
+                    this.logger.error(
+                        'listen.payment',
+                        `Falha ao atualizar order ${orderId}: ${error.message}`,
+                    );
+
+                    await this.messaging.publish(
+                        'app.events',
+                        `order.updated.${orderId}`,
+                        JSON.stringify({
+                            success: false,
+                            orderId,
+                            reason: error.message,
+                        }),
+                    );
+                }
+            },
+        );
     }
 }

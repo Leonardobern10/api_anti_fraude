@@ -24,6 +24,7 @@ import CheckoutService from '@modules/checkout/service/CheckoutService.js';
 import OrderQueryLocal from '@modules/domain/order/adapter/OrderQueryLocal.js';
 import CheckoutController from '@modules/checkout/controller/CheckoutController.js';
 import CheckoutRouter from '@modules/checkout/router/CheckoutRouter.js';
+import Messaging from 'messaging/Messaging.js';
 
 const appPort = process.env.SERVER_PORT || 3000;
 
@@ -33,6 +34,8 @@ const logger: Logger = new Logger();
 // Database
 const authDB = new AuthDB();
 const orderDB = new OrderDB();
+const messaging = new Messaging();
+await messaging.init();
 
 // Module - AUTH
 const authRepository = new AuthRepository(authDB);
@@ -48,9 +51,11 @@ const orderService = new OrderService(
     orderRepository,
     orderHistoryService,
     logger,
+    messaging,
 );
 const orderController = new OrderController(orderService);
 const orderRouter = new OrderRouter(orderController);
+orderService.listenPaymentEvents();
 
 // Module - CHECKOUT
 const checkoutRepository = new CheckoutRepository();
@@ -58,6 +63,7 @@ const checkoutOrderQuery = new OrderQueryLocal(orderRepository);
 const checkoutService = new CheckoutService(
     checkoutRepository,
     checkoutOrderQuery,
+    messaging,
 );
 const checkoutController = new CheckoutController(checkoutService);
 const checkoutRouter = new CheckoutRouter(checkoutController);

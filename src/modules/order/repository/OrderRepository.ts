@@ -53,11 +53,7 @@ export default class OrderRepository implements InterfaceOrderRepository {
         return { orders, quantity };
     }
 
-    async update(
-        id: string,
-        newStatus: OrderStatus,
-        statusPast: OrderHistory,
-    ): Promise<Order> {
+    async update(id: string, newStatus: OrderStatus): Promise<Order> {
         const order = await this.repo.findOne({
             where: { id: id },
             relations: { orderHistory: true },
@@ -67,7 +63,6 @@ export default class OrderRepository implements InterfaceOrderRepository {
         const updateOrder = await this.repo.update(
             { id: order.id },
             {
-                orderHistory: [...order.orderHistory, statusPast],
                 orderStatus: newStatus,
             },
         );

@@ -17,21 +17,27 @@ export default class CheckoutController implements InterfaceCheckoutController {
 
     async payment(req: Request, res: Response): Promise<void> {
         try {
+            // Extração de dados primitivos da requisição
             const { orderId } = req.params;
             const userEmail = (req as any).user.email;
 
+            // Verifica se o id do pedido foi fornecido
             if (!orderId) {
                 throw new BadRequestError('OrderId is required.');
             }
 
+            // Validação do payload de pagamento usando Zod
             const parsed = CheckoutSchema.safeParse(req.body);
 
+            // Se a validação falhar, lança um erro de requisição inválida
             if (!parsed.success) {
                 throw new BadRequestError('Invalid payment payload.');
             }
 
+            // Extração dos dados validados para o processamento do pagamento
             const infoPay = parsed.data;
 
+            // Extração do User-Agent e IP Address da requisição
             const userAgent = req.headers['user-agent'];
             if (!userAgent) {
                 throw new BadRequestError('User-Agent header is required.');
@@ -39,9 +45,10 @@ export default class CheckoutController implements InterfaceCheckoutController {
 
             const ipAddress = req.ip ?? 'unknown';
 
-            // 🔥 Conversão DTO primitivo → Value Object de domínio
+            // Conversão DTO primitivo → Value Object de domínio
             const infoMethod = InfoMethodFactory.create(infoPay);
 
+            // Conversão DTO primitivo → DTO de domínio
             const checkoutDTO = new CheckoutDTO(
                 orderId.toString()!,
                 userEmail,
@@ -53,6 +60,7 @@ export default class CheckoutController implements InterfaceCheckoutController {
                 new Date().toISOString(),
             );
 
+            // Processamento do pagamento
             const payment = await this.service.pay(checkoutDTO);
 
             res.status(HttpStatus.OK).json({ payment });
