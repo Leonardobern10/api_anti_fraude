@@ -38,6 +38,8 @@ export default class OrderService implements InterfaceOrderService {
     ): Promise<Order> {
         this.logger.info(`Update order by: ${user}`);
         const order = await this.repository.get(orderId);
+        // Não permite que pedidos já cancelados ou aprovados sejam atualizados.
+        // ! CORRIGIR ERRO QUANDO PEDIDO JÁ APROVADO, NAO DEVE SER ERRO
         Approver.approveUpdate(order, user);
 
         await this.orderHistoryService.createOrderHistory(order!);

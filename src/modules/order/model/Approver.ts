@@ -2,6 +2,7 @@ import { MSG } from '@utils/MessageResponse.js';
 import type Order from './entity/Order.js';
 import { HttpStatus } from '@utils/HttpStatus.utils.js';
 import { OrderStatus } from '../../domain/order/OrderStatus.js';
+import Logger from '@logs/Logger.js';
 
 export default class Approver {
     private static approveExistence(
@@ -13,7 +14,12 @@ export default class Approver {
             });
     }
     private static approveStatus(order: Order) {
-        if (order.orderStatus === OrderStatus.CANCELLED)
+        const logger = new Logger();
+        logger.info('Status do pedido: ' + order.orderStatus);
+        if (
+            order.orderStatus === OrderStatus.CANCELLED ||
+            order.orderStatus === OrderStatus.APPROVED
+        )
             throw new Error(MSG.ORDER.ERROR.UNAUTHORIZED, {
                 cause: HttpStatus.UNAUTHORIZED,
             });
@@ -31,6 +37,7 @@ export default class Approver {
     }
 
     public static approveUpdate(order: Order | null, user: string) {
+        console.log(order);
         this.approveAccess(order, user);
         this.approveStatus(order!);
     }
