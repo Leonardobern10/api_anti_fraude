@@ -5,6 +5,7 @@ import type ServerInterface from '../modules/domain/ServerInterface.js';
 import cookieParser from 'cookie-parser';
 import swaggerUi from 'swagger-ui-express'; // <-- FALTAVA
 import { swaggerSpec } from '../docs/swagger.config.js';
+import cors from 'cors';
 
 export default class Server implements ServerInterface {
     private server: Application;
@@ -18,6 +19,13 @@ export default class Server implements ServerInterface {
             '/api/v1/docs',
             swaggerUi.serve,
             swaggerUi.setup(swaggerSpec),
+        );
+        this.server.use(
+            cors({
+                origin: ['http://localhost:5173'],
+                methods: ['GET'],
+                allowedHeaders: ['Content-type', 'Authorization'],
+            }),
         );
         this.checkHealth();
     }

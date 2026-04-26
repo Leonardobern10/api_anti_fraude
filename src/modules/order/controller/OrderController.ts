@@ -7,12 +7,41 @@ import { OrderSchema } from '../model/schema/OrderSchema.js';
 import HttpError from '@errors/HttpError.js';
 import { MSG } from '@utils/MessageResponse.js';
 import NotFoundError from '@errors/NotFoundError.js';
+import { OrderQuerySchema } from '../model/schema/OrderQuerySchema.js';
+import BadRequestError from '@errors/BadRequestError.js';
 
 export default class OrderController implements InterfaceOrderController {
     private service: InterfaceOrderService;
 
     constructor(service: InterfaceOrderService) {
         this.service = service;
+    }
+
+    async getWithFilters(req: Request, res: Response): Promise<void> {
+        try {
+            const queryValidated = OrderQuerySchema.safeParse(req.query); // ✅ corrigido
+
+            if (!queryValidated.success) {
+                throw new BadRequestError('Invalid query parameters');
+            }
+
+            const response = await this.service.getOrderWithFilters(
+                queryValidated.data,
+            );
+
+            res.status(200).json({ orders: response });
+        } catch (error) {
+            BuildResponseError.buildError(res, error);
+        }
+    }
+
+    async getAll(req: Request, res: Response): Promise<void> {
+        try {
+            const all = await this.service.getAllOrders();
+            res.status(200).json({ ...all });
+        } catch (error) {
+            BuildResponseError.buildError(res, error);
+        }
     }
 
     /**

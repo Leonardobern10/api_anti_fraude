@@ -7,6 +7,12 @@ import type OrderHistory from '../model/entity/OrderHistory.js';
 import type { OrdersByUserResponse } from '../model/OrdersByUserResponse.js';
 import NotFoundError from '@errors/NotFoundError.js';
 import { MSG } from '@utils/MessageResponse.js';
+import type { OrderQueryDTO } from '../model/dto/OrderQueryDTO.js';
+
+type AllOrdersResponse = {
+    all: Order[];
+    count: number;
+};
 
 export default class OrderRepository implements InterfaceOrderRepository {
     private orderDB: OrderDB;
@@ -36,12 +42,60 @@ export default class OrderRepository implements InterfaceOrderRepository {
         return orderCreated;
     }
 
+    async getWithFilters(query: OrderQueryDTO): Promise<Order[]> {
+        const qb = this.repo.createQueryBuilder('order');
+
+        if (query.minValue) {
+            qb.where('order.value > :minValue', { minValue: query.minValue });
+        }
+
+        if (query.maxValue) {
+            qb.andWhere('order.value < :maxValue', {
+                maxValue: query.maxValue,
+            });
+        }
+
+        if (query.status) {
+            qb.andWhere('order.orderStatus = :orderStatus', {
+                orderStatus: query.status,
+            });
+        }
+
+        if (query.user) {
+            qb.andWhere('order.user = :user', { user: query.user });
+        }
+
+        if (query.sortBy) {
+            qb.orderBy(`order.${query.sortBy}`, query.modeSort || 'ASC');
+        }
+
+        if (query.limit) {
+            qb.limit(query.limit);
+        } else {
+            qb.limit(10);
+        }
+
+        if (query.page) {
+            qb.skip(query.page * (query.limit || 10));
+        }
+
+        return qb.getMany();
+    }
+
     async get(id: string): Promise<Order | null> {
         const order = await this.repo.findOne({
             where: { id: id },
             relations: { orderHistory: true },
         });
         return order;
+    }
+
+    async getAll(): Promise<AllOrdersResponse | null> {
+        const [all, count] = await this.repo.findAndCount({
+            relations: { orderHistory: true },
+        });
+        if (!all) return null;
+        else return { all, count };
     }
 
     async getByUser(userId: string): Promise<OrdersByUserResponse | null> {

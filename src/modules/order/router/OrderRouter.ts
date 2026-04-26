@@ -21,6 +21,8 @@ export default class OrderRouter {
 
     private regiterRoutes() {
         this.createOrder();
+        this.getOrdersWithParams();
+        this.getAllOrders();
         this.getOrder();
         this.getOrdersByUser;
         this.deleteOrder();
@@ -53,6 +55,18 @@ export default class OrderRouter {
                 this.controller.createOrder(req, res);
             },
         );
+    }
+
+    public getOrdersWithParams() {
+        this.router.get('/filters/', async (req: Request, res: Response) => {
+            this.controller.getWithFilters(req, res);
+        });
+    }
+
+    public getAllOrders() {
+        this.router.get('/', async (req: Request, res: Response) => {
+            this.controller.getAll(req, res);
+        });
     }
 
     /**

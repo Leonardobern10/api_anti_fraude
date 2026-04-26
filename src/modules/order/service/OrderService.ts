@@ -7,6 +7,8 @@ import Approver from '../model/Approver.js';
 import type Logger from '@logs/Logger.js';
 import type { OrdersByUserResponse } from '../model/OrdersByUserResponse.js';
 import type Messaging from 'messaging/Messaging.js';
+import BadRequestError from '@errors/BadRequestError.js';
+import type { OrderQueryDTO } from '../model/dto/OrderQueryDTO.js';
 
 export default class OrderService implements InterfaceOrderService {
     private repository: InterfaceOrderRepository;
@@ -55,6 +57,13 @@ export default class OrderService implements InterfaceOrderService {
         this.logger.info(`Cancel order ${orderId}`);
         await this.updateStatus(orderId, user, OrderStatus.CANCELLED);
         this.logger.info(`Cancel order ${orderId} with successfull`);
+    }
+
+    async getAllOrders(): Promise<{ all: Order[]; count: number } | null> {
+        this.logger.info('Getting all orders and count us.');
+        const data = await this.repository.getAll();
+        if (!data) throw new BadRequestError('Error on get orders');
+        else return data;
     }
 
     async getOrder(orderId: string, user: string): Promise<Order> {
@@ -109,5 +118,10 @@ export default class OrderService implements InterfaceOrderService {
                 }
             },
         );
+    }
+
+    public async getOrderWithFilters(dto: OrderQueryDTO): Promise<Order[]> {
+        this.logger.info('Getting all orders with filters.');
+        return await this.repository.getWithFilters(dto); // ✅ corrigido
     }
 }
