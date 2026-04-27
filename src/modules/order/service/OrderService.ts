@@ -10,6 +10,7 @@ import type Messaging from 'messaging/Messaging.js';
 import BadRequestError from '@errors/BadRequestError.js';
 import type { OrderQueryDTO } from '../model/dto/OrderQueryDTO.js';
 import type { CountStatsOrderResponse } from '../model/dto/CountStatsOrderResponse.js';
+import type { PaymentMethod } from '@modules/checkout/model/infoMethods/PaymentMethod.js';
 
 export default class OrderService implements InterfaceOrderService {
     private repository: InterfaceOrderRepository;
@@ -38,6 +39,7 @@ export default class OrderService implements InterfaceOrderService {
         orderId: string,
         user: string,
         newStatus: OrderStatus,
+        paymentMethod?: PaymentMethod,
     ): Promise<Order> {
         this.logger.info(`Update order by: ${user}`);
         const order = await this.repository.get(orderId);
@@ -48,7 +50,17 @@ export default class OrderService implements InterfaceOrderService {
 
         await this.orderHistoryService.createOrderHistory(order!);
 
-        const updatedOrder = await this.repository.update(order!.id, newStatus);
+        let updatedOrder;
+
+        if (paymentMethod) {
+            updatedOrder = await this.repository.update(
+                order!.id,
+                newStatus,
+                paymentMethod,
+            );
+        } else {
+            updatedOrder = await this.repository.update(order!.id, newStatus);
+        }
 
         this.logger.info(`Updated order ${order!.id} with successful.`);
         return updatedOrder;
@@ -84,7 +96,8 @@ export default class OrderService implements InterfaceOrderService {
             'app.events',
             'payment.created',
             async (raw) => {
-                const { paymentId, orderId, userId } = JSON.parse(raw);
+                const { paymentId, orderId, userId, paymentMethod } =
+                    JSON.parse(raw);
                 this.logger.info(
                     `Evento payment.created recebido para order ${orderId} | Author: ${userId}`,
                 );
@@ -94,12 +107,18 @@ export default class OrderService implements InterfaceOrderService {
                         orderId,
                         userId,
                         OrderStatus.APPROVED,
+                        paymentMethod,
                     );
 
                     await this.messaging.publish(
                         'app.events',
                         `order.updated.${orderId}`,
-                        JSON.stringify({ success: true, orderId, paymentId }),
+                        JSON.stringify({
+                            success: true,
+                            orderId,
+                            paymentId,
+                            paymentMethod: paymentMethod,
+                        }),
                     );
                 } catch (error: any) {
                     this.logger.error(

@@ -3,6 +3,7 @@ import type { OrdersByUserResponse } from '@modules/order/model/OrdersByUserResp
 import type { OrderStatus } from '@modules/domain/order/OrderStatus.js';
 import type { OrderQueryDTO } from '@modules/order/model/dto/OrderQueryDTO.js';
 import type { CountStatsOrderResponse } from '@modules/order/model/dto/CountStatsOrderResponse.js';
+import type { PaymentMethod } from '@modules/checkout/model/infoMethods/PaymentMethod.js';
 
 export default interface InterfaceOrderService {
     createOrder(email: string, value: number): Promise<Order>;
@@ -10,6 +11,7 @@ export default interface InterfaceOrderService {
         orderId: string,
         user: string,
         newStatus: OrderStatus,
+        payment?: PaymentMethod,
     ): Promise<Order>;
     getAllOrders(): Promise<{ all: Order[]; count: number } | null>;
     getOrder(id: string, user: string): Promise<Order>;

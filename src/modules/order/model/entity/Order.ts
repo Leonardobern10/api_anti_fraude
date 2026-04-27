@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { OrderStatus } from '../../../domain/order/OrderStatus.js';
 import OrderHistory from './OrderHistory.js';
+import { PaymentMethod } from '@modules/checkout/model/infoMethods/PaymentMethod.js';
 
 @Entity()
 export default class Order {
@@ -29,4 +30,11 @@ export default class Order {
     orderStatus!: OrderStatus;
     @OneToMany(() => OrderHistory, (orderHistory) => orderHistory.order)
     orderHistory!: OrderHistory[];
+    @Column({
+        type: 'enum',
+        enum: PaymentMethod,
+        default: null,
+        nullable: true,
+    })
+    payment?: PaymentMethod;
 }

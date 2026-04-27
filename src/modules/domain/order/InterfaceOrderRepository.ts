@@ -4,13 +4,18 @@ import type OrderHistory from '@modules/order/model/entity/OrderHistory.js';
 import type { OrdersByUserResponse } from '@modules/order/model/OrdersByUserResponse.js';
 import type { OrderQueryDTO } from '@modules/order/model/dto/OrderQueryDTO.js';
 import type { CountStatsOrderResponse } from '@modules/order/model/dto/CountStatsOrderResponse.js';
+import type { PaymentMethod } from '@modules/checkout/model/infoMethods/PaymentMethod.js';
 
 export default interface InterfaceOrderRepository {
     save(user: string, value: number): Promise<Order>;
     getAll(): Promise<{ all: Order[]; count: number } | null>;
     get(id: string): Promise<Order | null>;
     getByUser(user: string): Promise<OrdersByUserResponse | null>;
-    update(id: string, newStatus: OrderStatus): Promise<Order>;
+    update(
+        id: string,
+        newStatus: OrderStatus,
+        payment?: PaymentMethod,
+    ): Promise<Order>;
     getWithFilters(query: OrderQueryDTO): Promise<Order[]>;
     getStats(): Promise<CountStatsOrderResponse>;
 }

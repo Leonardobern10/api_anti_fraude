@@ -74,6 +74,7 @@ export default class CheckoutService implements InterfaceCheckoutService {
                 paymentId: payment.getIdPayment(),
                 orderId: dto.orderId,
                 userId: dto.userId,
+                paymentMethod: dto.paymentMethod,
             }),
         );
 

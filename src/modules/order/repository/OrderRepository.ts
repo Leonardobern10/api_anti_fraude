@@ -1,14 +1,14 @@
-import type { Repository } from 'typeorm';
+import { Between, type Repository } from 'typeorm';
 import type InterfaceOrderRepository from '@modules/domain/order/InterfaceOrderRepository.js';
 import Order from '../model/entity/Order.js';
 import { OrderStatus } from '../../domain/order/OrderStatus.js';
 import type OrderDB from '../data-source.order.js';
-import type OrderHistory from '../model/entity/OrderHistory.js';
 import type { OrdersByUserResponse } from '../model/OrdersByUserResponse.js';
 import NotFoundError from '@errors/NotFoundError.js';
 import { MSG } from '@utils/MessageResponse.js';
 import type { OrderQueryDTO } from '../model/dto/OrderQueryDTO.js';
 import type { CountStatsOrderResponse } from '../model/dto/CountStatsOrderResponse.js';
+import type { PaymentMethod } from '@modules/checkout/model/infoMethods/PaymentMethod.js';
 
 type AllOrdersResponse = {
     all: Order[];
@@ -108,7 +108,11 @@ export default class OrderRepository implements InterfaceOrderRepository {
         return { orders, quantity };
     }
 
-    async update(id: string, newStatus: OrderStatus): Promise<Order> {
+    async update(
+        id: string,
+        newStatus: OrderStatus,
+        paymentMethod: PaymentMethod,
+    ): Promise<Order> {
         const order = await this.repo.findOne({
             where: { id: id },
             relations: { orderHistory: true },
@@ -119,6 +123,7 @@ export default class OrderRepository implements InterfaceOrderRepository {
             { id: order.id },
             {
                 orderStatus: newStatus,
+                payment: paymentMethod,
             },
         );
         return updateOrder.raw;
@@ -126,9 +131,17 @@ export default class OrderRepository implements InterfaceOrderRepository {
 
     async getStats(): Promise<CountStatsOrderResponse> {
         try {
+            const now = new Date();
+
+            const startOfDay = new Date(now);
+            startOfDay.setHours(0, 0, 0, 0);
+
+            const endOfDay = new Date(now);
+            endOfDay.setHours(23, 59, 59, 999);
+
             const [data, countData] = await this.repo.findAndCount();
             const countToday = await this.repo.countBy({
-                createdAt: new Date(),
+                createdAt: Between(startOfDay, endOfDay),
             });
             const countProcessed = await this.repo.countBy({
                 orderStatus: OrderStatus.PAYMENT_PENDING,
