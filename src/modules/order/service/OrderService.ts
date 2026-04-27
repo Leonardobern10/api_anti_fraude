@@ -9,6 +9,7 @@ import type { OrdersByUserResponse } from '../model/OrdersByUserResponse.js';
 import type Messaging from 'messaging/Messaging.js';
 import BadRequestError from '@errors/BadRequestError.js';
 import type { OrderQueryDTO } from '../model/dto/OrderQueryDTO.js';
+import type { CountStatsOrderResponse } from '../model/dto/CountStatsOrderResponse.js';
 
 export default class OrderService implements InterfaceOrderService {
     private repository: InterfaceOrderRepository;
@@ -123,5 +124,10 @@ export default class OrderService implements InterfaceOrderService {
     public async getOrderWithFilters(dto: OrderQueryDTO): Promise<Order[]> {
         this.logger.info('Getting all orders with filters.');
         return await this.repository.getWithFilters(dto); // ✅ corrigido
+    }
+
+    public async getStats(): Promise<CountStatsOrderResponse> {
+        this.logger.info('Getting count of all stats about orders in system.');
+        return await this.repository.getStats();
     }
 }

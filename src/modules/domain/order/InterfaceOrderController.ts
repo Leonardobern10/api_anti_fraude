@@ -8,4 +8,5 @@ export default interface InterfaceOrderController {
     cancelOrder(req: Request, res: Response): Promise<void>;
     updateOrder(req: Request, res: Response): Promise<void>;
     getWithFilters(req: Request, res: Response): Promise<void>;
+    getStats(req: Request, res: Response): Promise<void>;
 }

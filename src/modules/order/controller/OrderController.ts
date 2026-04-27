@@ -101,6 +101,15 @@ export default class OrderController implements InterfaceOrderController {
         }
     }
 
+    async getStats(req: Request, res: Response): Promise<void> {
+        try {
+            const data = await this.service.getStats();
+            res.status(200).json({ data });
+        } catch (error) {
+            BuildResponseError.buildError(res, error);
+        }
+    }
+
     /**
      * @swagger
      * /orders:

@@ -2,6 +2,7 @@ import type Order from '@modules/order/model/entity/Order.js';
 import type { OrdersByUserResponse } from '@modules/order/model/OrdersByUserResponse.js';
 import type { OrderStatus } from '@modules/domain/order/OrderStatus.js';
 import type { OrderQueryDTO } from '@modules/order/model/dto/OrderQueryDTO.js';
+import type { CountStatsOrderResponse } from '@modules/order/model/dto/CountStatsOrderResponse.js';
 
 export default interface InterfaceOrderService {
     createOrder(email: string, value: number): Promise<Order>;
@@ -15,4 +16,5 @@ export default interface InterfaceOrderService {
     getOrdersByUser(user: string): Promise<OrdersByUserResponse | null>;
     cancelOrder(id: string, user: string): Promise<void>;
     getOrderWithFilters(dto: OrderQueryDTO): Promise<Order[]>;
+    getStats(): Promise<CountStatsOrderResponse>;
 }

@@ -8,6 +8,7 @@ import type { OrdersByUserResponse } from '../model/OrdersByUserResponse.js';
 import NotFoundError from '@errors/NotFoundError.js';
 import { MSG } from '@utils/MessageResponse.js';
 import type { OrderQueryDTO } from '../model/dto/OrderQueryDTO.js';
+import type { CountStatsOrderResponse } from '../model/dto/CountStatsOrderResponse.js';
 
 type AllOrdersResponse = {
     all: Order[];
@@ -121,5 +122,38 @@ export default class OrderRepository implements InterfaceOrderRepository {
             },
         );
         return updateOrder.raw;
+    }
+
+    async getStats(): Promise<CountStatsOrderResponse> {
+        try {
+            const [data, countData] = await this.repo.findAndCount();
+            const countToday = await this.repo.countBy({
+                createdAt: new Date(),
+            });
+            const countProcessed = await this.repo.countBy({
+                orderStatus: OrderStatus.PAYMENT_PENDING,
+            });
+            const countAnalisys = await this.repo.countBy({
+                orderStatus: OrderStatus.UNDER_REVIEW,
+            });
+            const countApproved = await this.repo.countBy({
+                orderStatus: OrderStatus.APPROVED,
+            });
+            const countRejected = await this.repo.countBy({
+                orderStatus: OrderStatus.REJECTED,
+            });
+
+            return {
+                orders: data,
+                all: countData,
+                today: countToday,
+                processed: countProcessed,
+                analisys: countAnalisys,
+                approved: countApproved,
+                rejected: countRejected,
+            };
+        } catch (error) {
+            throw new Error('Erro ao processar consulta');
+        }
     }
 }

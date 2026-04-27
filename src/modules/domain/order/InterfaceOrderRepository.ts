@@ -3,6 +3,7 @@ import type { OrderStatus } from '@modules/domain/order/OrderStatus.js';
 import type OrderHistory from '@modules/order/model/entity/OrderHistory.js';
 import type { OrdersByUserResponse } from '@modules/order/model/OrdersByUserResponse.js';
 import type { OrderQueryDTO } from '@modules/order/model/dto/OrderQueryDTO.js';
+import type { CountStatsOrderResponse } from '@modules/order/model/dto/CountStatsOrderResponse.js';
 
 export default interface InterfaceOrderRepository {
     save(user: string, value: number): Promise<Order>;
@@ -11,4 +12,5 @@ export default interface InterfaceOrderRepository {
     getByUser(user: string): Promise<OrdersByUserResponse | null>;
     update(id: string, newStatus: OrderStatus): Promise<Order>;
     getWithFilters(query: OrderQueryDTO): Promise<Order[]>;
+    getStats(): Promise<CountStatsOrderResponse>;
 }
