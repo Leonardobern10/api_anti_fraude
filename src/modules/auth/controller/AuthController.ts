@@ -167,7 +167,7 @@ export default class AuthController implements InterfaceAuthController {
      *       404:
      *         description: Usuário não encontrado
      */
-    async getUser(req: Request, res: Response): Promise<void> {
+    protected async getUser(req: Request, res: Response): Promise<void> {
         try {
             const { email } = req.query;
             if (!email)
