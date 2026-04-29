@@ -57,6 +57,37 @@ export default class AuthController implements InterfaceAuthController {
             BuildResponseError.buildError(res, error);
         }
     }
+
+    async registerAnalyst(req: Request, res: Response): Promise<void> {
+        try {
+            const { name, email, password } = req.body;
+            RegisterSchema.parse({ name, email, password });
+            const user: Client = await this.service.registerAnalyst(
+                name,
+                email,
+                await Crypt.encrypt(password),
+            );
+            res.status(HttpStatus.CREATED).json({ data: user });
+        } catch (error) {
+            BuildResponseError.buildError(res, error);
+        }
+    }
+
+    async registerAdmin(req: Request, res: Response) {
+        try {
+            const { name, email, password } = req.body;
+            RegisterSchema.parse({ name, email, password });
+            const user: Client = await this.service.registerAdmin(
+                name,
+                email,
+                await Crypt.encrypt(password),
+            );
+            res.status(HttpStatus.CREATED).json({ data: user });
+        } catch (error) {
+            BuildResponseError.buildError(res, error);
+        }
+    }
+
     /**
      * @swagger
      * /auth/login:
@@ -167,7 +198,7 @@ export default class AuthController implements InterfaceAuthController {
      *       404:
      *         description: Usuário não encontrado
      */
-    protected async getUser(req: Request, res: Response): Promise<void> {
+    public async getUser(req: Request, res: Response): Promise<void> {
         try {
             const { email } = req.query;
             if (!email)

@@ -4,7 +4,11 @@ import { HttpStatus } from './HttpStatus.utils.js';
 import BaseError from '@errors/BaseError.js';
 
 export default class BuildResponseError {
-    static buildError(res: Response, error: unknown): Response {
+    static buildError(
+        res: Response,
+        error: unknown,
+        status?: HttpStatus,
+    ): Response {
         if (error instanceof ZodError) {
             const errorData = error.issues[0];
             console.log(errorData);
@@ -14,13 +18,18 @@ export default class BuildResponseError {
                 fieldError: errorData?.path[0],
             });
         } else if (error instanceof BaseError) {
+            console.log(error);
             return res
-                .status(error.statusCode || HttpStatus.INTERNAL_SERVER)
+                .status(status || HttpStatus.INTERNAL_SERVER)
                 .json({ error: error.message });
         } else {
             return res
-                .status(HttpStatus.INTERNAL_SERVER)
-                .json({ error: 'Error on processing request.' });
+                .status(status || HttpStatus.INTERNAL_SERVER)
+                .json({
+                    error:
+                        (error as any).message ||
+                        'Error on processing request.',
+                });
         }
     }
 }

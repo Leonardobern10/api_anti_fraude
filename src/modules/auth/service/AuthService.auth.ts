@@ -8,6 +8,7 @@ import { MSG } from '@utils/MessageResponse.js';
 import NotFoundError from '@errors/NotFoundError.js';
 import BadRequestError from '@errors/BadRequestError.js';
 import type { JwtPayload } from 'jsonwebtoken';
+import { ClientRole } from '../model/ClientRole.js';
 
 export default class AuthService implements InterfaceAuthService {
     private repository: AuthRepository;
@@ -18,10 +19,19 @@ export default class AuthService implements InterfaceAuthService {
         this.logger = logger;
     }
 
+    async registerAnalyst(name: string, email: string, password: string) {
+        return this.register(name, email, password, ClientRole.ANALYST);
+    }
+
+    async registerAdmin(name: string, email: string, password: string) {
+        return this.register(name, email, password, ClientRole.ADMIN);
+    }
+
     async register(
         name: string,
         email: string,
         password: string,
+        role?: ClientRole,
     ): Promise<Client> {
         this.logger.info(`Email searched: ${email}`);
         const user: Client | null = await this.findUser(email);
@@ -29,7 +39,12 @@ export default class AuthService implements InterfaceAuthService {
             this.logger.error('create user', MSG.AUTH.ERROR.BAD_REQUEST.USER);
             throw new NotFoundError(MSG.AUTH.ERROR.BAD_REQUEST.USER);
         }
-        const registered = await this.repository.save(name, email, password);
+        const registered = await this.repository.save(
+            name,
+            email,
+            password,
+            role,
+        );
         this.logger.info(MSG.AUTH.SUCCESS.CREATED);
         return registered;
     }

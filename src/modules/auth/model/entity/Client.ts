@@ -5,7 +5,7 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
-import { ClientRole } from '../ClientRole.auth.js';
+import { ClientRole } from '../ClientRole.js';
 
 @Entity()
 export default class Client {

@@ -2,6 +2,7 @@ import express from 'express';
 import type { Router, Request, Response } from 'express';
 import AuthMiddleWare from '@gateway/middlewares/AuthMiddleware.js';
 import type InterfaceOrderController from '@modules/domain/order/InterfaceOrderController.js';
+import RoleMiddleware from '@gateway/middlewares/RoleMiddleware.js';
 
 /**
  * @swagger
@@ -59,21 +60,36 @@ export default class OrderRouter {
     }
 
     public getStats() {
-        this.router.get('/statistics/', async (req: Request, res: Response) => {
-            this.controller.getStats(req, res);
-        });
+        this.router.get(
+            '/statistics/',
+            AuthMiddleWare.checkAuthentication,
+            RoleMiddleware.checkAuthorization,
+            async (req: Request, res: Response) => {
+                this.controller.getStats(req, res);
+            },
+        );
     }
 
     public getOrdersWithParams() {
-        this.router.get('/filters/', async (req: Request, res: Response) => {
-            this.controller.getWithFilters(req, res);
-        });
+        this.router.get(
+            '/filters/',
+            AuthMiddleWare.checkAuthentication,
+            RoleMiddleware.checkAuthorization,
+            async (req: Request, res: Response) => {
+                this.controller.getWithFilters(req, res);
+            },
+        );
     }
 
     public getAllOrders() {
-        this.router.get('/', async (req: Request, res: Response) => {
-            this.controller.getAll(req, res);
-        });
+        this.router.get(
+            '/',
+            AuthMiddleWare.checkAuthentication,
+            RoleMiddleware.checkAuthorization,
+            async (req: Request, res: Response) => {
+                this.controller.getAll(req, res);
+            },
+        );
     }
 
     /**
@@ -140,6 +156,7 @@ export default class OrderRouter {
         this.router.delete(
             '/:id',
             AuthMiddleWare.checkAuthentication,
+            RoleMiddleware.checkAuthorization,
             async (req: Request, res: Response) => {
                 this.controller.cancelOrder(req, res);
             },
@@ -168,6 +185,7 @@ export default class OrderRouter {
         this.router.patch(
             '/:id',
             AuthMiddleWare.checkAuthentication,
+            RoleMiddleware.checkAuthorization,
             async (req: Request, res: Response) => {
                 this.controller.updateOrder(req, res);
             },

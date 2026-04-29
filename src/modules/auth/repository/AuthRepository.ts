@@ -1,6 +1,7 @@
 import type { Repository } from 'typeorm';
 import type Client from '../model/entity/Client.js';
 import AuthDB from '../data-source.auth.js';
+import { ClientRole } from '../model/ClientRole.js';
 
 export default class AuthRepository {
     private authDB: AuthDB;
@@ -39,11 +40,13 @@ export default class AuthRepository {
         name: string,
         email: string,
         password: string,
+        role?: ClientRole,
     ): Promise<Client> {
         const user = await this.repo.create({
             name: name,
             email: email,
             password: password,
+            role: role || ClientRole.USER,
         });
         const newUser = await this.repo.save(user);
         return newUser;

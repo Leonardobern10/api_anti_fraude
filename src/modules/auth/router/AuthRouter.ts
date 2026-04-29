@@ -3,6 +3,7 @@ import express from 'express';
 import type AuthController from '../controller/AuthController.js';
 import AuthMiddleWare from '../../../gateway/middlewares/AuthMiddleware.js';
 import { PATH } from '@utils/Path.js';
+import RoleMiddleware from '@gateway/middlewares/RoleMiddleware.js';
 
 /**
  * @swagger
@@ -41,6 +42,28 @@ export default class AuthRouter {
             PATH.AUTH.REGISTER,
             async (req: Request, res: Response) => {
                 this.controller.register(req, res);
+            },
+        );
+    }
+
+    public createAnalyst() {
+        this.router.post(
+            `${PATH.AUTH.REGISTER}/analyst`,
+            AuthMiddleWare.checkAuthentication,
+            RoleMiddleware.checkAdminAuthorization,
+            async (req: Request, res: Response) => {
+                this.controller.registerAnalyst(req, res);
+            },
+        );
+    }
+
+    public createAdmin() {
+        this.router.post(
+            `${PATH.AUTH.REGISTER}/admin`,
+            AuthMiddleWare.checkAuthentication,
+            RoleMiddleware.checkAdminAuthorization,
+            async (req: Request, res: Response) => {
+                this.controller.registerAdmin(req, res);
             },
         );
     }
@@ -143,6 +166,8 @@ export default class AuthRouter {
 
     private registerRoutes() {
         this.createUser();
+        this.createAnalyst();
+        this.createAdmin();
         this.getUser();
         this.login();
         this.authStatus();
