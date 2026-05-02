@@ -120,6 +120,15 @@ export default class AuthRouter {
         });
     }
 
+    public loginDashboard() {
+        this.router.post(
+            PATH.AUTH.LOGIN_DASHBOARD,
+            async (req: Request, res: Response) => {
+                this.controller.loginDashboard(req, res);
+            },
+        );
+    }
+
     /**
      * @swagger
      * /auth/status:
@@ -170,6 +179,7 @@ export default class AuthRouter {
         this.createAdmin();
         this.getUser();
         this.login();
+        this.loginDashboard();
         this.authStatus();
         this.logout();
     }

@@ -7,6 +7,7 @@ export const PATH = {
         LOGIN: '/login',
         AUTH_STATUS: '/authStatus',
         LOGOUT: '/logout',
+        LOGIN_DASHBOARD: '/dashboard',
     },
     ORDER: {
         BASE: '/orders',

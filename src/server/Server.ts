@@ -12,6 +12,14 @@ export default class Server implements ServerInterface {
 
     constructor(server: Application) {
         this.server = server;
+        this.server.use(
+            cors({
+                origin: ['http://localhost:5173'],
+                methods: ['GET', 'POST', 'PATCH', 'DELETE', 'PUT', 'OPTIONS'],
+                allowedHeaders: ['Content-Type', 'Authorization'],
+                credentials: true,
+            }),
+        );
         this.server.use(express.json());
         this.server.use(cookieParser());
         this.server.use(HttpLogger.buildHttpLogger()); // ✔ middleware correto
@@ -20,13 +28,7 @@ export default class Server implements ServerInterface {
             swaggerUi.serve,
             swaggerUi.setup(swaggerSpec),
         );
-        this.server.use(
-            cors({
-                origin: ['http://localhost:5173'],
-                methods: ['GET'],
-                allowedHeaders: ['Content-type', 'Authorization'],
-            }),
-        );
+
         this.checkHealth();
     }
 

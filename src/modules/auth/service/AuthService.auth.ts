@@ -57,6 +57,19 @@ export default class AuthService implements InterfaceAuthService {
         const token = JwtUtils.generate(user);
         return token;
     }
+    async loginDashboard(email: string, password: string): Promise<string> {
+        const user = await this.findUser(email);
+
+        if (!user) throw new NotFoundError(MSG.AUTH.ERROR.NOT_FOUND);
+        const isValidPassword = await Crypt.compare(password, user.password);
+        if (!isValidPassword)
+            throw new BadRequestError(MSG.AUTH.ERROR.BAD_REQUEST.CREDENTIALS);
+        if (user.role !== ClientRole.ADMIN && user.role !== ClientRole.ANALYST)
+            throw new Error('User not authorized');
+        const token = JwtUtils.generate(user);
+        return token;
+    }
+
     async findUser(email: string): Promise<Client | null> {
         const user = await this.repository.getUser(email);
         return user;

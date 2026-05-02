@@ -120,7 +120,29 @@ export default class AuthController implements InterfaceAuthController {
             res.cookie('token', token, {
                 httpOnly: true,
                 secure: false,
-                sameSite: 'strict',
+                sameSite: 'lax',
+                maxAge: 1000 * 60 * 60,
+            });
+
+            res.status(HttpStatus.OK).json({ message: MSG.AUTH.SUCCESS.LOGIN });
+        } catch (error) {
+            BuildResponseError.buildError(res, error);
+        }
+    }
+
+    async loginDashboard(req: Request, res: Response): Promise<void> {
+        try {
+            const { email, password } = req.body;
+            LoginSchema.parse({ email, password });
+            const token: string = await this.service.loginDashboard(
+                email,
+                password,
+            );
+
+            res.cookie('token', token, {
+                httpOnly: true,
+                secure: false,
+                sameSite: 'lax',
                 maxAge: 1000 * 60 * 60,
             });
 

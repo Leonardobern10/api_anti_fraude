@@ -9,14 +9,17 @@ export default interface InterfaceOrderService {
     createOrder(email: string, value: number): Promise<Order>;
     updateStatus(
         orderId: string,
-        user: string,
+        user: { email: string; role: string },
         newStatus: OrderStatus,
         payment?: PaymentMethod,
     ): Promise<Order>;
     getAllOrders(): Promise<{ all: Order[]; count: number } | null>;
-    getOrder(id: string, user: string): Promise<Order>;
+    getOrder(id: string, user: { email: string; role: string }): Promise<Order>;
     getOrdersByUser(user: string): Promise<OrdersByUserResponse | null>;
-    cancelOrder(id: string, user: string): Promise<void>;
+    cancelOrder(
+        id: string,
+        user: { email: string; role: string },
+    ): Promise<void>;
     getOrderWithFilters(dto: OrderQueryDTO): Promise<Order[]>;
     getStats(): Promise<CountStatsOrderResponse>;
 }
