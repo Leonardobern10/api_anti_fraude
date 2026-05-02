@@ -18,18 +18,13 @@ export default class BuildResponseError {
                 fieldError: errorData?.path[0],
             });
         } else if (error instanceof BaseError) {
-            console.log(error);
             return res
                 .status(status || HttpStatus.INTERNAL_SERVER)
                 .json({ error: error.message });
         } else {
-            return res
-                .status(status || HttpStatus.INTERNAL_SERVER)
-                .json({
-                    error:
-                        (error as any).message ||
-                        'Error on processing request.',
-                });
+            return res.status(status || HttpStatus.INTERNAL_SERVER).json({
+                error: (error as any).message || 'Error on processing request.',
+            });
         }
     }
 }
