@@ -140,7 +140,7 @@ export default class OrderController implements InterfaceOrderController {
         try {
             const { value } = req.body;
             const user = this.getUser(req);
-            OrderSchema.parse({ email: user, value });
+            OrderSchema.parse({ email: user.email, value });
             const newOrder = await this.service.createOrder(user.email, value);
             res.status(HttpStatus.CREATED).json({
                 success: MSG.ORDER.SUCCESS.CREATED,

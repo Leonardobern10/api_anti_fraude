@@ -111,7 +111,7 @@ export default class OrderService implements InterfaceOrderService {
                 try {
                     await this.updateStatus(
                         orderId,
-                        userId,
+                        { email: userId, role: 'user' },
                         OrderStatus.APPROVED,
                         paymentMethod,
                     );
