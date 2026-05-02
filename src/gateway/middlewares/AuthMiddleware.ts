@@ -11,14 +11,11 @@ export default class AuthMiddleWare {
         next: NextFunction,
     ) {
         try {
-            console.log('Middleware executado!');
-            console.log(req.cookies);
             const token = req.cookies.token;
             if (!token) throw new BadRequestError(MSG.AUTH.ERROR.INVALID_TOKEN);
 
             const payload = JwtUtils.verify(token);
             (req as any).user = payload; // injeta usuário
-            console.log((req as any).user);
             next();
         } catch (error) {
             BuildResponseError.buildError(res, error);
