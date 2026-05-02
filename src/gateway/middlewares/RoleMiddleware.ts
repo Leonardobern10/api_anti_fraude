@@ -4,11 +4,6 @@ import { HttpStatus } from '@utils/HttpStatus.utils.js';
 import type { NextFunction, Request, Response } from 'express';
 
 export default class RoleMiddleware {
-    static logTentative(email: string, role: ClientRole) {
-        console.log(
-            `The client ${email} tried to access protected route. Your role: ${role}`,
-        );
-    }
     static checkAuthorization(req: Request, res: Response, next: NextFunction) {
         console.log('RoleMiddleware executado!');
         try {
