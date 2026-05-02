@@ -9,17 +9,17 @@ Vou te dizer exatamente o que eu espero ver.
 
 Eu quero abrir o sistema e entender em segundos:
 
-- Quantos pedidos hoje
-- Quantos aprovados
-- Quantos rejeitados (antifraude)
-- Quantos em análise (UNDER_REVIEW)
-- Quantos em processamento (IN_PROCESSING)
+- Quantos pedidos hoje X
+- Quantos aprovados X
+- Quantos rejeitados (antifraude) X
+- Quantos em análise (UNDER_REVIEW) X
+- Quantos em processamento (IN_PROCESSING) X
 
 👉 Isso é o “batimento cardíaco” do sistema.
 
 ---
 
-# 📦 2. Lista de pedidos (core do sistema)
+# 📦 2. Lista de pedidos (core do sistema) X
 
 Tabela com:
 
