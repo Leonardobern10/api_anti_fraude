@@ -20,15 +20,12 @@ export default class OrderController implements InterfaceOrderController {
     async getWithFilters(req: Request, res: Response): Promise<void> {
         try {
             const queryValidated = OrderQuerySchema.safeParse(req.query); // ✅ corrigido
-
             if (!queryValidated.success) {
                 throw new BadRequestError('Invalid query parameters');
             }
-
             const response = await this.service.getOrderWithFilters(
                 queryValidated.data,
             );
-
             res.status(200).json({ orders: response });
         } catch (error) {
             BuildResponseError.buildError(res, error);
@@ -77,7 +74,7 @@ export default class OrderController implements InterfaceOrderController {
     async getOrder(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
-            const user = (req as any).user.email;
+            const user = this.getUser(req);
             if (!id || typeof id !== 'string')
                 throw new HttpError(
                     MSG.ORDER.ERROR.INVALID_ID,
@@ -92,8 +89,8 @@ export default class OrderController implements InterfaceOrderController {
 
     async getOrdersByUser(req: Request, res: Response): Promise<void> {
         try {
-            const { user } = (req as any).user.email;
-            const result = await this.service.getOrdersByUser(user);
+            const user = this.getUser(req);
+            const result = await this.service.getOrdersByUser(user.email);
             if (!result) throw new NotFoundError('Orders not found.');
             res.status(200).json({ result });
         } catch (error) {
@@ -144,7 +141,7 @@ export default class OrderController implements InterfaceOrderController {
             const { value } = req.body;
             const user = this.getUser(req);
             OrderSchema.parse({ email: user, value });
-            const newOrder = await this.service.createOrder(user, value);
+            const newOrder = await this.service.createOrder(user.email, value);
             res.status(HttpStatus.CREATED).json({
                 success: MSG.ORDER.SUCCESS.CREATED,
                 order: newOrder,
@@ -213,8 +210,9 @@ export default class OrderController implements InterfaceOrderController {
         this.updateOrder(req, res);
     }
 
-    private getUser(req: Request): string {
-        return (req as any).user.email;
+    private getUser(req: Request): { email: string; role: string } {
+        const user = (req as any).user;
+        return { email: user.email, role: user.role };
     }
 
     private checkId(id: any): string {

@@ -37,7 +37,7 @@ export default class OrderService implements InterfaceOrderService {
 
     async updateStatus(
         orderId: string,
-        user: string,
+        user: { email: string; role: string },
         newStatus: OrderStatus,
         paymentMethod?: PaymentMethod,
     ): Promise<Order> {
@@ -66,7 +66,10 @@ export default class OrderService implements InterfaceOrderService {
         return updatedOrder;
     }
 
-    async cancelOrder(orderId: string, user: string): Promise<void> {
+    async cancelOrder(
+        orderId: string,
+        user: { email: string; role: string },
+    ): Promise<void> {
         this.logger.info(`Cancel order ${orderId}`);
         await this.updateStatus(orderId, user, OrderStatus.CANCELLED);
         this.logger.info(`Cancel order ${orderId} with successfull`);
@@ -79,7 +82,10 @@ export default class OrderService implements InterfaceOrderService {
         else return data;
     }
 
-    async getOrder(orderId: string, user: string): Promise<Order> {
+    async getOrder(
+        orderId: string,
+        user: { email: string; role: string },
+    ): Promise<Order> {
         this.logger.info(`Getting order ${orderId}`);
         const order = await this.repository.get(orderId);
         Approver.approveAccess(order, user);

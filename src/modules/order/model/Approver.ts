@@ -24,19 +24,28 @@ export default class Approver {
                 cause: HttpStatus.UNAUTHORIZED,
             });
     }
-    private static approveAuthorization(order: Order, user: string) {
-        if (order.user !== user)
+    private static approveAuthorization(
+        order: Order,
+        user: { email: string; role: string },
+    ) {
+        if (order.user !== user.email && user.role !== 'analyst')
             throw new Error(MSG.AUTH.ERROR.UNAUTHORIZED, {
                 cause: HttpStatus.UNAUTHORIZED,
             });
     }
 
-    public static approveAccess(order: Order | null, user: string) {
+    public static approveAccess(
+        order: Order | null,
+        user: { email: string; role: string },
+    ) {
         this.approveExistence(order);
         this.approveAuthorization(order!, user);
     }
 
-    public static approveUpdate(order: Order | null, user: string) {
+    public static approveUpdate(
+        order: Order | null,
+        user: { email: string; role: string },
+    ) {
         console.log(order);
         this.approveAccess(order, user);
         this.approveStatus(order!);
