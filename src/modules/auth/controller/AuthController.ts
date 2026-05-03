@@ -134,7 +134,7 @@ export default class AuthController implements InterfaceAuthController {
         try {
             const { email, password } = req.body;
             LoginSchema.parse({ email, password });
-            const token: string = await this.service.loginDashboard(
+            const { token, name } = await this.service.loginDashboard(
                 email,
                 password,
             );
@@ -146,7 +146,10 @@ export default class AuthController implements InterfaceAuthController {
                 maxAge: 1000 * 60 * 60,
             });
 
-            res.status(HttpStatus.OK).json({ message: MSG.AUTH.SUCCESS.LOGIN });
+            res.status(HttpStatus.OK).json({
+                message: MSG.AUTH.SUCCESS.LOGIN,
+                name: name,
+            });
         } catch (error) {
             BuildResponseError.buildError(res, error);
         }
